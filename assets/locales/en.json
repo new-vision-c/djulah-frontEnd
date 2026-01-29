@@ -1,0 +1,47 @@
+{
+  "common": {
+    "next": "Next",
+    "send": "Send",
+    "resend": "Resend code",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "continue": "Continue",
+    "back": "Back"
+  },
+  "splash": {
+    "title": "A home that suits you, in just a few minutes.",
+    "createAccount": "Create an account",
+    "signIn": "Sign in",
+    "continueWithoutAccount": "Continue without account"
+  },
+  "auth": {
+    "welcome": "Welcome to Djulah",
+    "signupSubtitle": "A few details to create your account and enjoy Djula to the fullest.",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "orContinueWithEmail": "Or continue with email",
+    "email": "Email",
+    "emailPlaceholder": "Enter a valid email",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your name",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Sign in"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Incorrect Email",
+    "enterValidEmail": "Enter a valid email",
+    "passwordMinLength": "Password must be at least @count characters"
+  },
+  "verification": {
+    "title": "Confirm it's you",
+    "subtitle": "Enter the code sent to",
+    "subtitleSecure": "to secure your account",
+    "codeLabel": "Verification code",
+    "resendIn": "Send a new code in:",
+    "timerComplete": "Complete!",
+    "timerCompleteMessage": "The countdown is complete"
+  }
+}

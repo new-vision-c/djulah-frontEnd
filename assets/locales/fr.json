@@ -1,0 +1,47 @@
+{
+  "common": {
+    "next": "Suivant",
+    "send": "Envoyer",
+    "resend": "Renvoyer le code",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "continue": "Continuer",
+    "back": "Retour"
+  },
+  "splash": {
+    "title": "Un logement qui vous ressemble, en quelques minutes.",
+    "createAccount": "Créer un compte",
+    "signIn": "Se connecter",
+    "continueWithoutAccount": "Continuer sans compte"
+  },
+  "auth": {
+    "welcome": "Bienvenue sur Djulah",
+    "signupSubtitle": "Quelques infos pour créer votre compte et profiter pleinement de Djula.",
+    "continueWithGoogle": "Continuer avec Google",
+    "continueWithApple": "Continuer avec Apple",
+    "orContinueWithEmail": "Ou continuer avec un email",
+    "email": "Email",
+    "emailPlaceholder": "Entrer un email valide",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Entrer un votre nom",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrer un votre mot de passe",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "login": "Se connecter"
+  },
+  "validation": {
+    "emailRequired": "L'email est requis",
+    "emailInvalid": "Email Incorrect",
+    "enterValidEmail": "Entrer un email valide",
+    "passwordMinLength": "Le mot de passe doit contenir au moins @count caractères"
+  },
+  "verification": {
+    "title": "Confirmez que c'est bien vous",
+    "subtitle": "Entrez le code envoyé à l'adresse",
+    "subtitleSecure": "sécuriser votre compte",
+    "codeLabel": "Code de vérification",
+    "resendIn": "Envoyer un nouveau code dans:",
+    "timerComplete": "Terminé!",
+    "timerCompleteMessage": "Le compte à rebours est terminé"
+  }
+}

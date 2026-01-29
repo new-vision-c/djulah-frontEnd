@@ -1,0 +1,49 @@
+app:
+  android:
+    flavorDimensions: "app-type"
+  ios:
+    buildSettings:
+      {}
+flavors:
+  client:
+    app:
+      name: "Djulah"
+
+    android:
+      applicationId: "com.nvc.djulah"
+
+    ios:
+      bundleId: "com.nvc.djulah.client"
+
+    icon: "assets/icons/icon_client.png"
+
+  pro:
+    app:
+      name: "Djulah Host"
+
+    android:
+      applicationId: "com.nvc.djulah.pro"
+
+    ios:
+      bundleId: "com.nvc.djulah.pro"
+
+    icon: "assets/icons/icon_pro.png"
+
+instructions:
+  - assets:download
+  - assets:extract
+  - android:androidManifest
+  - android:buildGradle
+  - android:dummyAssets
+  - flutter:flavors
+  - flutter:app
+  - flutter:pages
+  - flutter:main
+  - google:firebase
+  - ios:podfile
+  - ios:xcconfig
+  - ios:buildTargets
+  - ios:schema
+  - ios:dummyAssets
+  - ios:plist
+  - assets:clean

@@ -1,0 +1,7 @@
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/client/logo djulah.png"
+  adaptive_icon_background: "#1EABE2"
+  adaptive_icon_foreground: "assets/images/client/logo djulah.png"
+  min_sdk_android: 21

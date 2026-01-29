@@ -1,0 +1,11 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  image: assets/images/client/logoTransparent.png
+  fullscreen: true
+  color: "#1EABE2"
+
+  android_12:
+    fullscreen: true
+    image: assets/images/client/logoTransparent.png
+    color: "#1EABE2"
