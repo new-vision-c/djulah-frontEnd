@@ -8,6 +8,7 @@ class RoutesPro {
           name: RouteNames.proTest,
           page: () => const TestScreen(),
           binding: ProTestControllerBinding(),
-        ),      ];
+        ),
+  ];
 }
 

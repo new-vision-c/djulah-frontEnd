@@ -12,6 +12,9 @@ class ProfileImageService extends GetxService {
   final ImagePicker _picker = ImagePicker();
   final profileImagePath = Rxn<String>();
   
+  /// État de chargement lors du changement de photo
+  final isUploading = false.obs;
+  
   bool get hasProfileImage => 
       profileImagePath.value != null && 
       profileImagePath.value!.isNotEmpty &&
@@ -63,8 +66,8 @@ class ProfileImageService extends GetxService {
     }
   }
 
-  /// Ouvre directement la caméra
-  Future<void> pickImageFromCamera() async {
+  /// Ouvre directement la caméra et retourne le fichier sélectionné
+  Future<File?> pickImageFromCamera() async {
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.camera,
@@ -75,17 +78,23 @@ class ProfileImageService extends GetxService {
       );
 
       if (pickedFile != null) {
-        await _saveImageToLocal(pickedFile);
+        isUploading.value = true;
+        try {
+          return await _saveImageToLocal(pickedFile);
+        } finally {
+          isUploading.value = false;
+        }
       }
+      return null;
     } catch (e) {
       debugPrint('Erreur caméra: $e');
       // Si la caméra échoue, proposer la galerie
-      await pickImageFromGallery();
+      return await pickImageFromGallery();
     }
   }
 
-  /// Ouvre directement la galerie
-  Future<void> pickImageFromGallery() async {
+  /// Ouvre directement la galerie et retourne le fichier sélectionné
+  Future<File?> pickImageFromGallery() async {
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -95,14 +104,21 @@ class ProfileImageService extends GetxService {
       );
 
       if (pickedFile != null) {
-        await _saveImageToLocal(pickedFile);
+        isUploading.value = true;
+        try {
+          return await _saveImageToLocal(pickedFile);
+        } finally {
+          isUploading.value = false;
+        }
       }
+      return null;
     } catch (e) {
       debugPrint('Erreur galerie: $e');
+      return null;
     }
   }
 
-  Future<void> _saveImageToLocal(XFile pickedFile) async {
+  Future<File> _saveImageToLocal(XFile pickedFile) async {
     final directory = await getApplicationDocumentsDirectory();
     final fileName = 'profile_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
     final savedPath = '${directory.path}/$fileName';
@@ -120,6 +136,8 @@ class ProfileImageService extends GetxService {
     
     profileImagePath.value = newImage.path;
     await _saveImagePath(newImage.path);
+    
+    return newImage;
   }
 
   Future<void> removeProfileImage() async {

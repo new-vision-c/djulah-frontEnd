@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.nvc.djulah.djulah"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "28.1.13356709" // Required by maplibre_gl
 
     flavorDimensions += "app-type"
 
@@ -26,7 +26,7 @@ android {
         applicationId = "com.nvc.djulah"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion // MapLibre GL requires minimum SDK 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

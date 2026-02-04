@@ -22,12 +22,12 @@ class BottomNavigation extends StatelessWidget {
     "assets/images/client/BottomNavImages/users.svg",
   ];
   
-  final List<String> listOflabel = [
-    "Explorer",
-    "Reservations",
-    "Favoris",
-    "Messages",
-    "Profil",
+  List<String> get listOflabel => [
+    'navigation.explore'.tr,
+    'navigation.reservations'.tr,
+    'navigation.favorites'.tr,
+    'navigation.messages'.tr,
+    'navigation.profile'.tr,
   ];
 
   @override

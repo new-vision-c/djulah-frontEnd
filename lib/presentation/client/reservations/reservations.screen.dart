@@ -27,7 +27,7 @@ class ReservationsScreen extends GetView<ReservationsController> {
           child: Padding(
             padding:  EdgeInsets.only(top:  16.r),
             child: Text(
-              "Reservations",
+              'reservations.title'.tr,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 28.sp,
@@ -57,9 +57,10 @@ class ReservationsScreen extends GetView<ReservationsController> {
               spacing: 8.w,
               runSpacing: 8.h,
               children: [
-                _buildFilterChip("Confirmé", 0, const Color(0xFF4CAF50)),
-                _buildFilterChip("Annulé", 1, const Color(0xFFF44336)),
-                _buildFilterChip("En attente", 2, const Color(0xFFFFC107)),
+                _buildFilterChip('reservations.confirmed'.tr, 0, const Color(0xFF4CAF50)),
+                _buildFilterChip('reservations.cancelled'.tr, 1, const Color(0xFFF44336)),
+                _buildFilterChip('reservations.pending'.tr, 2, const Color(0xFFFFC107)),
+                _buildFilterChip('reservations.rejected'.tr, 3, const Color(0xFF9E9E9E)),
               ],
             ),
           ),
@@ -78,12 +79,15 @@ class ReservationsScreen extends GetView<ReservationsController> {
             return NotFound();
           }
 
-          return ListView.builder(
-            itemCount: filteredList.length,
-            itemBuilder: (context, index) {
-              final reservation = filteredList[index];
-              return _buildReservationItem(reservation);
-            },
+          return RefreshIndicator(
+            onRefresh: controller.onRefresh,
+            child: ListView.builder(
+              itemCount: filteredList.length,
+              itemBuilder: (context, index) {
+                final reservation = filteredList[index];
+                return _buildReservationItem(reservation);
+              },
+            ),
           );
         }),
       ),
@@ -96,7 +100,9 @@ class ReservationsScreen extends GetView<ReservationsController> {
       case "Annulé":
         return const Color(0xFFF44336); // Rouge
       case "En attente":
-        return const Color(0xFFFFC107); // Jaune
+        return const Color(0xFFFFC107); // Jaune/Orange
+      case "Rejeté":
+        return const Color(0xFF9E9E9E); // Gris
       default:
         return Colors.grey;
     }
@@ -110,6 +116,8 @@ class ReservationsScreen extends GetView<ReservationsController> {
         return Icons.cancel;
       case "En attente":
         return Icons.access_time;
+      case "Rejeté":
+        return Icons.block;
       default:
         return Icons.help_outline;
     }

@@ -23,7 +23,7 @@ class FavorisScreen extends GetView<FavorisController> {
             color: Color(0xFFE8E8E8),
           )
         ),
-        title: Text("Favoris",
+        title: Text('favorites.title'.tr,
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
@@ -49,7 +49,9 @@ class FavorisScreen extends GetView<FavorisController> {
           );
         }
 
-        return GridView(
+        return RefreshIndicator(
+          onRefresh: controller.onRefresh,
+          child: GridView(
             padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 32.r),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -71,7 +73,7 @@ class FavorisScreen extends GetView<FavorisController> {
                       width: 176.r,
                       height: 176.r,
                         child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(), // Désactive le scroll interne
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisSpacing: 4.r,
                               mainAxisSpacing: 4.r,
@@ -86,7 +88,7 @@ class FavorisScreen extends GetView<FavorisController> {
                   ),
                   SizedBox(height: 12.r),
                   Text(
-                    "Vu récemment",
+                    'favorites.recently_viewed'.tr,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
@@ -96,7 +98,7 @@ class FavorisScreen extends GetView<FavorisController> {
                     )
                   ),
                   Text(
-                    "Hier",
+                    'search.yesterday'.tr,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -142,7 +144,7 @@ class FavorisScreen extends GetView<FavorisController> {
                   ),
                   SizedBox(height: 12.r),
                   Text(
-                      "Enregistrements",
+                      'favorites.saved'.tr,
                       style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
@@ -152,7 +154,7 @@ class FavorisScreen extends GetView<FavorisController> {
                       )
                   ),
                   Text(
-                      "${controller.favoritesCount} favoris enregistrés",
+                      'favorites.saved_count'.trParams({'count': controller.favoritesCount.toString()}),
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
@@ -165,6 +167,7 @@ class FavorisScreen extends GetView<FavorisController> {
               ),
             )
           ],
+          ),
         );
       }),
     );

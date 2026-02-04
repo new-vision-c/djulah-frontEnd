@@ -25,16 +25,56 @@ class SearchModalController extends GetxController {
   // Dynamic suggestions list (reactive)
   final RxList<Map<String, dynamic>> suggestions = <Map<String, dynamic>>[].obs;
   
-  // Available logement types
-  final List<Map<String, dynamic>> logementTypes = [
+  // Property types based on category tab
+  // Tab 0 = Meublé (Furnished), Tab 1 = Non meublé (Unfurnished), Tab 3 = Commercial
+  
+  // Types de propriétés pour Meublé (furnished)
+  final List<Map<String, dynamic>> furnishedPropertyTypes = [
     {'id': 'appartement', 'label': 'Appartement', 'icon': Icons.apartment},
     {'id': 'maison', 'label': 'Maison', 'icon': Icons.home},
     {'id': 'studio', 'label': 'Studio', 'icon': Icons.single_bed},
     {'id': 'villa', 'label': 'Villa', 'icon': Icons.villa},
     {'id': 'chambre', 'label': 'Chambre', 'icon': Icons.bed},
     {'id': 'duplex', 'label': 'Duplex', 'icon': Icons.stairs},
-    {'id': 'commercial', 'label': 'Commercial', 'icon': Icons.store},
   ];
+  
+  // Types de propriétés pour Non meublé (unfurnished)
+  final List<Map<String, dynamic>> unfurnishedPropertyTypes = [
+    {'id': 'appartement', 'label': 'Appartement', 'icon': Icons.apartment},
+    {'id': 'maison', 'label': 'Maison', 'icon': Icons.home},
+    {'id': 'studio', 'label': 'Studio', 'icon': Icons.single_bed},
+    {'id': 'villa', 'label': 'Villa', 'icon': Icons.villa},
+    {'id': 'duplex', 'label': 'Duplex', 'icon': Icons.stairs},
+    {'id': 'immeuble', 'label': 'Immeuble', 'icon': Icons.domain},
+    {'id': 'terrain', 'label': 'Terrain', 'icon': Icons.landscape},
+  ];
+  
+  // Types de propriétés pour Commercial
+  final List<Map<String, dynamic>> commercialPropertyTypes = [
+    {'id': 'bureau', 'label': 'Bureau', 'icon': Icons.business},
+    {'id': 'boutique', 'label': 'Boutique', 'icon': Icons.store},
+    {'id': 'entrepot', 'label': 'Entrepôt', 'icon': Icons.warehouse},
+    {'id': 'restaurant', 'label': 'Restaurant', 'icon': Icons.restaurant},
+    {'id': 'hotel', 'label': 'Hôtel', 'icon': Icons.hotel},
+    {'id': 'local', 'label': 'Local commercial', 'icon': Icons.storefront},
+  ];
+  
+  // Legacy property for backward compatibility
+  List<Map<String, dynamic>> get logementTypes => furnishedPropertyTypes;
+  
+  // Get property types based on tab index
+  List<Map<String, dynamic>> getPropertyTypesForTab(int tabIndex) {
+    switch (tabIndex) {
+      case 0:
+        return furnishedPropertyTypes;
+      case 1:
+        return unfurnishedPropertyTypes;
+      case 3:
+        return commercialPropertyTypes;
+      default:
+        return furnishedPropertyTypes;
+    }
+  }
   
   // OpenRouteService API Key
   static const String _orsApiKey = 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImYzZWU4YjRhNWY3ZDRmMTA5MzU1MWE0MmVjMGI1NDI1IiwiaCI6Im11cm11cjY0In0=';
@@ -148,11 +188,14 @@ class SearchModalController extends GetxController {
 
   Future<void> searchWithORS(String query) async {
     try {
+      // Utiliser l'API autocomplete pour une recherche plus flexible et tolérante
+      // L'autocomplete permet de trouver "marche mokolo" en tapant "mokolo"
       final url = Uri.parse(
-        'https://api.openrouteservice.org/geocode/search'
+        'https://api.openrouteservice.org/geocode/autocomplete'
         '?text=${Uri.encodeComponent(query)}'
         '&boundary.country=CM'
-        '&size=5',
+        '&size=20'
+        '&layers=venue,address,street,neighbourhood,locality,localadmin,county,macrocounty,region',
       );
 
       final response = await http.get(
@@ -174,7 +217,26 @@ class SearchModalController extends GetxController {
           final double? lat = (coords.length > 1 && coords[1] != null) ? (coords[1] as num).toDouble() : null;
 
           final name = (props['name'] ?? props['locality'] ?? props['street'] ?? props['county'] ?? props['region'] ?? props['label'] ?? '').toString();
-          final address = (props['label'] ?? '').toString();
+          
+          // Déscription plus détaillée du lieu
+          final neighbourhood = props['neighbourhood']?.toString() ?? '';
+          final locality = props['locality']?.toString() ?? '';
+          final localadmin = props['localadmin']?.toString() ?? '';
+          final county = props['county']?.toString() ?? '';
+          final region = props['region']?.toString() ?? '';
+          final country = props['country']?.toString() ?? 'Cameroun';
+          
+          // Construire une adresse détaillée
+          final addressParts = <String>[
+            if (neighbourhood.isNotEmpty && neighbourhood != name) neighbourhood,
+            if (locality.isNotEmpty && locality != name && locality != neighbourhood) locality,
+            if (localadmin.isNotEmpty && localadmin != name && localadmin != locality) localadmin,
+            if (county.isNotEmpty && county != localadmin) county,
+            if (region.isNotEmpty) region,
+            country,
+          ];
+          final address = addressParts.isNotEmpty ? addressParts.join(', ') : (props['label'] ?? '').toString();
+          
           final type = _getLocationType(props);
 
           return {
@@ -323,7 +385,9 @@ class SearchModalController extends GetxController {
   
   String getLogementTypeLabel() {
     if (selectedLogementType.value.isEmpty) return '';
-    final type = logementTypes.firstWhere(
+    // Search in all property type lists
+    final allTypes = [...furnishedPropertyTypes, ...unfurnishedPropertyTypes, ...commercialPropertyTypes];
+    final type = allTypes.firstWhere(
       (t) => t['id'] == selectedLogementType.value,
       orElse: () => {'label': ''},
     );

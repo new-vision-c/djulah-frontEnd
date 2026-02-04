@@ -3,21 +3,18 @@ import 'package:djulah/infrastructure/navigation/route_names.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../domain/entities/logement.dart';
 import '../../../infrastructure/theme/client_theme.dart';
+import 'animated_heart_button.dart';
 
 class AppCard extends StatelessWidget {
-  final Logement item;
-  final bool isFavoris;
+  final Propriete item;
 
   const AppCard({
     super.key,
     required this.item,
-    this.isFavoris = false,
   });
 
   @override
@@ -47,23 +44,15 @@ class AppCard extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(12.r),
-                    child: Align(
-                      alignment: AlignmentGeometry.topRight,
-                      child: isFavoris
-                          ? Image.asset(
-                              "assets/images/client/heart_fill.png",
-                              width: 24.r,
-                              height: 24.r,
-                            )
-                          : SvgPicture.asset(
-                              "assets/images/client/heart_card.svg",
-                              width: 24.r,
-                              height: 24.r,
-                            ),
+                  Positioned(
+                    top: 12.r,
+                    right: 12.r,
+                    child: AnimatedHeartButton(
+                      propertyId: item.id,
+                      logement: item,
+                      size: 24,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

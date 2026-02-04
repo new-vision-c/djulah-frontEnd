@@ -84,7 +84,7 @@ class HomeScreen extends GetView<HomeController> {
                         width: 18.r, height: 18.r),
                   ),
                   Text(
-                    "Commencer ma recherche",
+                    'home.start_search'.tr,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontStyle: FontStyle.normal,
@@ -130,7 +130,7 @@ class HomeScreen extends GetView<HomeController> {
                     ),
                   );
                 }),
-                label: "Meublés",
+                label: 'home.furnished'.tr,
 
               ),
               TabItem(
@@ -147,7 +147,7 @@ class HomeScreen extends GetView<HomeController> {
                     ),
                   );
                 }),
-                label: "Non meublés",
+                label: 'home.unfurnished'.tr,
               ),
               TabItem(
                 icon: Obx(() {
@@ -163,7 +163,7 @@ class HomeScreen extends GetView<HomeController> {
                     ),
                   );
                 }),
-                label: "Commercial",
+                label: 'home.commercial'.tr,
 
               ),
             ],

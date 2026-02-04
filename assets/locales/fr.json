@@ -6,7 +6,27 @@
     "cancel": "Annuler",
     "confirm": "Confirmer",
     "continue": "Continuer",
-    "back": "Retour"
+    "back": "Retour",
+    "save": "Sauvegarder",
+    "modify": "Modifier",
+    "delete": "Supprimer",
+    "error": "Erreur",
+    "success": "Succès",
+    "error_occurred": "Une erreur est survenue",
+    "session_expired": "Session expirée. Veuillez vous reconnecter.",
+    "network_error": "Problème de connexion. Vérifiez votre réseau.",
+    "try_again": "Veuillez réessayer"
+  },
+  "network": {
+    "checking": "Vérification...",
+    "noInternet": "Aucune connexion internet",
+    "internetRestored": "Connexion internet rétablie",
+    "serverUnavailable": "Désolé, le serveur est inaccessible. Veuillez réessayer.",
+    "connectionProblem": "Problème de connexion. Vérifiez votre réseau.",
+    "serverError": "Erreur serveur. Réessayez plus tard.",
+    "invalidRequest": "Requête invalide",
+    "errorOccurred": "Une erreur est survenue",
+    "backendConnected": "Backend connecté"
   },
   "splash": {
     "title": "Un logement qui vous ressemble, en quelques minutes.",
@@ -16,7 +36,9 @@
   },
   "auth": {
     "welcome": "Bienvenue sur Djulah",
+    "welcomeBack": "Ravie de vous revoir",
     "signupSubtitle": "Quelques infos pour créer votre compte et profiter pleinement de Djula.",
+    "loginSubtitle": "Connectez-vous pour reprendre votre recherche là où vous l'avez laissée.",
     "continueWithGoogle": "Continuer avec Google",
     "continueWithApple": "Continuer avec Apple",
     "orContinueWithEmail": "Ou continuer avec un email",
@@ -27,13 +49,35 @@
     "password": "Mot de passe",
     "passwordPlaceholder": "Entrer un votre mot de passe",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
-    "login": "Se connecter"
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signIn": "Se connecter",
+    "signUp": "Inscrivez-vous",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "forgotPassword": "Mot de passe oublié ?",
+    "fill_all_fields": "Veuillez remplir correctement tous les champs",
+    "login_success": "Connexion réussie, bienvenue @name",
+    "invalid_credentials": "Email ou mot de passe incorrect",
+    "account_locked": "Votre compte a été bloqué",
+    "account_not_verified": "Votre compte n'est pas encore vérifié. Veuillez vous réinscrire.",
+    "login_error": "Erreur de connexion. Veuillez réessayer.",
+    "sessionExpired": "Session expirée. Reconnexion requise.",
+    "accountLockedContact": "Votre compte est bloqué. Contactez le support."
+  },
+  "google": {
+    "error_title": "Erreur Google",
+    "error_message": "Impossible de se connecter avec Google. Veuillez réessayer.",
+    "connection_error": "Une erreur est survenue lors de la connexion Google"
+  },
+  "apple": {
+    "coming_soon": "Apple Sign-In sera disponible prochainement"
   },
   "validation": {
     "emailRequired": "L'email est requis",
     "emailInvalid": "Email Incorrect",
     "enterValidEmail": "Entrer un email valide",
-    "passwordMinLength": "Le mot de passe doit contenir au moins @count caractères"
+    "passwordMinLength": "Le mot de passe doit contenir au moins @count caractères",
+    "passwordComplexity": "Le mot de passe doit contenir au moins 2 types de caractères différents (minuscules, majuscules, chiffres, caractères spéciaux)"
   },
   "verification": {
     "title": "Confirmez que c'est bien vous",
@@ -42,6 +86,169 @@
     "codeLabel": "Code de vérification",
     "resendIn": "Envoyer un nouveau code dans:",
     "timerComplete": "Terminé!",
-    "timerCompleteMessage": "Le compte à rebours est terminé"
+    "timerCompleteMessage": "Le compte à rebours est terminé",
+    "enter_6_digits": "Veuillez entrer le code à 6 chiffres",
+    "success": "Vérification réussie!",
+    "invalid_code": "Le code OTP entré est incorrect",
+    "expired_code": "Le code OTP a expiré. Demandez un nouveau code.",
+    "user_not_found": "Utilisateur introuvable",
+    "already_verified": "Votre compte est déjà vérifié",
+    "error": "Erreur lors de la vérification. Veuillez réessayer.",
+    "code_resent": "Code renvoyé avec succès",
+    "too_many_requests": "Veuillez patienter avant de renvoyer le code",
+    "resend_error": "Erreur lors du renvoi du code. Veuillez réessayer."
+  },
+  "profile": {
+    "title": "Profil",
+    "personal_info": "Informations personnelles",
+    "name_empty": "Le nom ne peut pas être vide",
+    "update_success": "Profil mis à jour avec succès",
+    "tap_to_change_photo": "Appuyez pour modifier la photo"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "security": "Sécurité",
+    "privacy_policy": "Politique de confidentialité"
+  },
+  "language": {
+    "title": "Langue",
+    "french": "Français",
+    "english": "Anglais",
+    "changed_success": "Langue modifiée avec succès"
+  },
+  "security": {
+    "title": "Sécurité",
+    "password": "Mot de passe",
+    "current_password": "Mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "password_updated": "Mot de passe mis à jour avec succès",
+    "invalid_current_password": "Le mot de passe actuel est incorrect",
+    "weak_password": "Le nouveau mot de passe doit contenir au moins 8 caractères",
+    "enter_password": "Veuillez entrer votre mot de passe"
+  },
+  "account": {
+    "delete_title": "Supprimer mon compte",
+    "delete_warning": "Cette action est irréversible. Toutes vos données seront supprimées définitivement.",
+    "delete_confirm": "Entrez votre mot de passe pour confirmer:",
+    "deleted_success": "Votre compte a été supprimé avec succès",
+    "invalid_password": "Le mot de passe est incorrect"
+  },
+  "loading": {
+    "updating": "Mise à jour en cours...",
+    "deleting": "Suppression en cours...",
+    "logout": "Déconnexion..."
+  },
+  "navigation": {
+    "explore": "Explorer",
+    "reservations": "Reservations",
+    "favorites": "Favoris",
+    "messages": "Messages",
+    "profile": "Profil"
+  },
+  "home": {
+    "start_search": "Commencer ma recherche",
+    "furnished": "Meublés",
+    "unfurnished": "Non meublés",
+    "commercial": "Commercial",
+    "categories": "Categories",
+    "near_you": "À proximité de vous",
+    "most_booked": "Les plus réservés cette semaine",
+    "recommended": "Recommandés pour vous",
+    "no_property_found": "Aucun logement trouvé",
+    "no_property_message": "Nous n'avons trouvé aucun élément correspondant à ce type pour le moment."
+  },
+  "search": {
+    "where": "Où ?",
+    "when": "Quand",
+    "add_dates": "Ajouter des dates",
+    "property_type": "Type de logement",
+    "add_types": "Ajouter des types",
+    "suggestions": "Suggestions",
+    "quick_options": "Options rapides",
+    "choose_date": "Choisir une date",
+    "select_type": "Sélectionnez un type",
+    "yesterday": "Hier",
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain",
+    "clear_all": "Tout effacer",
+    "search_button": "Rechercher",
+    "no_results": "Aucun résultat trouvé",
+    "try_other_search": "Essayez avec un autre terme de recherche",
+    "connection_error": "Erreur de connexion",
+    "retry": "Réessayer"
+  },
+  "reservations": {
+    "title": "Reservations",
+    "confirmed": "Confirmé",
+    "cancelled": "Annulé",
+    "pending": "En attente",
+    "rejected": "Rejeté",
+    "nothing_here": "Rien ici pour le moment",
+    "find_all_reservations": "Retrouvez toutes vos réservations ici fois que vous en aurez fait une ... On vous attends",
+    "details": "Details",
+    "date": "Date",
+    "total_price": "Prix total",
+    "cancel_warning": "Si vous annulez avant l'arrivée prévue le @date, vous aurez droit a un remboursement partiel",
+    "view_full_conditions": "Consulter les conditions complètes",
+    "cancel_reservation": "Annuler la réservation",
+    "book_again": "Réserver à nouveau",
+    "report_issue": "Signaler un problème"
+  },
+  "favorites": {
+    "title": "Favoris",
+    "recently_viewed": "Vu récemment",
+    "saved": "Enregistrements",
+    "saved_count": "@count favoris enregistrés",
+    "nothing_here": "Rien ici pour le moment",
+    "find_favorites": "Retrouvez tout vos coups de cœur ici, alors à très vite",
+    "remove_title": "Retirer des favoris",
+    "remove_confirm": "Voulez-vous vraiment retirer ce logement de vos favoris ?",
+    "remove_button": "Retirer"
+  },
+  "property": {
+    "title": "Logement",
+    "price_unavailable": "Prix non disponible",
+    "book_now": "Réservez maintenant",
+    "book": "Réserver",
+    "host": "Hôte",
+    "host_since": "Hôte depuis @years an@plural",
+    "what_offers": "Ce que propose ce logement",
+    "show_amenities": "Afficher les @count équipements",
+    "about_property": "À propos de ce logement",
+    "read_more": "Lire la suite",
+    "where_located": "Où se trouve ce logement",
+    "location_unavailable": "Localisation non disponible",
+    "reviews": "commentaires",
+    "no_reviews": "Aucun commentaire",
+    "no_reviews_yet": "Aucun commentaire pour le moment",
+    "show_reviews": "Afficher les @count commentaires",
+    "show_full_message": "Afficher tout le message",
+    "meet_host": "Faites connaissance avec votre hôte",
+    "evaluations": "évaluations",
+    "global_rating": "Note globale",
+    "as_host": "En tant qu'hôte",
+    "host_language": "Langue parlée par l'hôte :",
+    "message_host": "Envoyer un message à l'hôte",
+    "response_rate": "Taux de réponse : @rate%",
+    "response_time": "L'hôte répond généralement @time",
+    "payment_warning": "Afin de protéger votre paiement, utilisez toujours Djulah pour envoyer de l'argent et communiquer avec les hôtes",
+    "kitchen": "Cuisine",
+    "wifi": "Wifi",
+    "tv": "Télévision",
+    "free_parking": "Parking gratuit sur place"
+  },
+  "profil_screen": {
+    "customize": "Customisé",
+    "personal_info": "Informations personnelles",
+    "history": "Historique",
+    "accessibility": "Accessibilité",
+    "settings": "Parametres",
+    "privacy": "Confidentialité",
+    "terms": "Termes d'utilisation",
+    "privacy_policy": "Politique de confidentialité",
+    "data_usage": "Utilisation des données",
+    "logout": "Se déconnecter"
   }
 }

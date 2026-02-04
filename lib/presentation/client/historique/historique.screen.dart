@@ -18,7 +18,7 @@ class HistoriqueScreen extends GetView<HistoriqueController> {
       body: SafeArea(
         child: Column(
           children: [
-             AppBarCustom(title: "Historique"),
+             AppBarCustom(title: 'profil_screen.history'.tr),
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.r),
@@ -32,15 +32,16 @@ class HistoriqueScreen extends GetView<HistoriqueController> {
                     );
                   }
 
-                  return ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 20.r),
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: controller.historiqueItems.length,
-                    itemBuilder: (context, index) {
+                  return RefreshIndicator(
+                    onRefresh: controller.onRefresh,
+                    child: ListView.builder(
+                      padding: EdgeInsets.symmetric(vertical: 20.r),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: controller.historiqueItems.length,
+                      itemBuilder: (context, index) {
                       final item = controller.historiqueItems[index];
                       
-                      // Logique pour n'afficher le header de date que si nécessaire
-                      bool showHeader = index == 0 || 
+                      bool showHeader = index == 0 ||
                                        controller.historiqueItems[index - 1].dateHeader != item.dateHeader;
 
                       return Column(
@@ -71,7 +72,7 @@ class HistoriqueScreen extends GetView<HistoriqueController> {
                                 ),
                                 SizedBox(width: 4.w),
                                 Text(
-                                  item.isConfirmed ? "Confirmé" : "Annulée",
+                                  item.isConfirmed ? 'reservations.confirmed'.tr : 'reservations.cancelled'.tr,
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: item.isConfirmed ? const Color(0xFF4CAF50) : ClientTheme.errorColor,
@@ -95,6 +96,7 @@ class HistoriqueScreen extends GetView<HistoriqueController> {
                         ],
                       );
                     },
+                    ),
                   );
                 }),
               ),

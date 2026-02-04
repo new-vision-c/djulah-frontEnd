@@ -1,5 +1,8 @@
 import 'package:djulah/infrastructure/navigation/route_names.dart';
 import 'package:djulah/presentation/components/loading_overlay.widget.dart';
+import 'package:djulah/infrastructure/network/connection_service.dart';
+import 'package:djulah/infrastructure/services/auth_service.dart';
+import 'package:djulah/app/services/profile_cache_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,6 +11,7 @@ import 'package:get/get.dart';
 import 'app/services/locale_service.dart';
 import 'app/services/app_lifecycle_service.dart';
 import 'app/services/profile_image_service.dart';
+import 'app/services/auth_state_service.dart';
 import 'datas/local_storage/app_storage.dart';
 import 'datas/local_storage/local_storage_initializer.dart';
 import 'datas/local_storage/favorites_storage_service.dart';
@@ -45,23 +49,26 @@ class Main extends StatelessWidget {
       designSize: const Size(402, 874),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: LoadingOverlay(
-        child: GetMaterialApp(
-          title: AppConfig.appName,
-          theme: ClientTheme.lightTheme,
-          smartManagement: SmartManagement.full,
-          initialRoute: initialRoute,
-          getPages: Nav.routes,
-          translations: translations,
-          locale: localeService.currentLocale,
-          fallbackLocale: LocaleService.fallbackLocale,
-          supportedLocales: LocaleService.supportedLocales,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-        ),
+      child: GetMaterialApp(
+        title: AppConfig.appName,
+        theme: ClientTheme.lightTheme,
+        smartManagement: SmartManagement.full,
+        initialRoute: initialRoute,
+        getPages: Nav.routes,
+        translations: translations,
+        locale: localeService.currentLocale,
+        fallbackLocale: LocaleService.fallbackLocale,
+        supportedLocales: LocaleService.supportedLocales,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        builder: (context, child) {
+          return LoadingOverlay(
+            child: child ?? const SizedBox.shrink(),
+          );
+        },
       ),
     );
   }
@@ -79,11 +86,8 @@ Future<({String initialRoute, AppTranslations translations})> _bootstrapClient()
 
   final appStorage = await AppStorage.init();
   Get.put<AppStorage>(appStorage, permanent: true);
-  
-  // Initialiser le stockage local (Hive + GetStorage)
   await LocalStorageInitializer.init();
   
-  // Enregistrer les services de stockage local
   Get.put<FavoritesStorageService>(
     FavoritesStorageService(),
     permanent: true,
@@ -100,13 +104,22 @@ Future<({String initialRoute, AppTranslations translations})> _bootstrapClient()
     RecentlyViewedStorageService(),
     permanent: true,
   );
-  
-  // Configuration des barres système - Status bar et navbar visibles
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
   
+  // Configuration de la status bar pour le mode edge-to-edge
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark, // Icônes sombres sur fond clair
+      statusBarBrightness: Brightness.light, // iOS: contenu clair = icônes sombres
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarDividerColor: Colors.transparent,
+    ),
+  );
   Get.put<NetworkStateService>(NetworkStateService(), permanent: true);
 
   final lifecycle = AppLifecycleService();
@@ -118,51 +131,22 @@ Future<({String initialRoute, AppTranslations translations})> _bootstrapClient()
 
   Get.put<DioClient>(DioClient(), permanent: true);
 
-  Get.put<ProfileImageService>(ProfileImageService(), permanent: true);
-  
-  // Initialiser le service de synchronisation (après DioClient)
-  Get.put<SyncService>(SyncServiceFactory.create(), permanent: true);
+  // Initialiser le service de connexion global APRÈS DioClient
+  Get.put<ConnectionService>(ConnectionService(), permanent: true);
 
+  Get.put<ProfileImageService>(ProfileImageService(), permanent: true);
+  Get.put<SyncService>(SyncServiceFactory.create(), permanent: true);
+  final authStateService = AuthStateService();
+  Get.put<AuthStateService>(authStateService, permanent: true);
+  
+  // Service d'authentification (utilisé par profil, sécurité, etc.)
+  Get.put<AuthService>(AuthService(), permanent: true);
+  
+  // Service de cache du profil utilisateur
+  Get.put<ProfileCacheService>(ProfileCacheService(), permanent: true);
+
+  // Les handlers de NetworkStateService pour les messages utilisateur
   Get.find<NetworkStateService>().registerHandlers(
-    onBackendUnreachable: () {
-      final ctx = Get.context;
-      if (ctx == null) return;
-      AppFlushBar.show(
-        ctx,
-        title: "Serveur inaccessible",
-        message: 'Veuillez Vous rassurer que vous etez connecter.',
-        type: MessageType.error,
-      );
-    },
-    onUnauthorized: () {
-      final ctx = Get.context;
-      if (ctx == null) return;
-      AppFlushBar.show(
-        ctx,
-        title: "Not authorize",
-        message: 'Reconnexion requise.',
-        type: MessageType.warning,
-      );
-    },
-    onLocked: () {
-      final ctx = Get.context;
-      if (ctx == null) return;
-      AppFlushBar.show(
-        ctx,
-        title: "Compte bloqué",
-        message: 'Contacte le support.',
-        type: MessageType.error,
-      );
-    },
-    onLogout: () {
-      final ctx = Get.context;
-      if (ctx == null) return;
-      AppFlushBar.show(
-        ctx,
-        message: 'Déconnexion.',
-        type: MessageType.info,
-      );
-    },
     onMessage: (message, type) {
       final ctx = Get.context;
       if (ctx == null) return;
@@ -174,15 +158,13 @@ Future<({String initialRoute, AppTranslations translations})> _bootstrapClient()
     },
   );
 
-  // Tester la connexion au backend après un court délai (pour laisser l'app se charger)
-  Future.delayed(const Duration(seconds: 2), () {
-    Get.find<NetworkStateService>().checkBackendConnection();
-  });
-
   final translations = await AppTranslations.load();
 
+  // Déterminer la route initiale en fonction de l'état d'authentification
+  final initialRoute = authStateService.getInitialRoute();
+
   return (
-  initialRoute: RouteNames.clientSplashScreenCustom,
-  translations: translations,
+    initialRoute: initialRoute,
+    translations: translations,
   );
 }

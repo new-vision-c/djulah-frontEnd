@@ -6,7 +6,7 @@ class Environments {
 }
 
 class ConfigEnvironments {
-  static const String _currentEnvironments = Environments.LOCAL;
+  static const String _currentEnvironments = Environments.PRODUCTION;
   static final List<Map<String, String>> _availableEnvironments = [
     {
       'env': Environments.LOCAL,
@@ -14,15 +14,15 @@ class ConfigEnvironments {
     },
     {
       'env': Environments.DEV,
-      'url': '',
+      'url': 'https://manager-api-d5ty.onrender.com/',
     },
     {
       'env': Environments.QAS,
-      'url': '',
+      'url': 'https://manager-api-d5ty.onrender.com/',
     },
     {
       'env': Environments.PRODUCTION,
-      'url': '',
+      'url': 'https://manager-api-d5ty.onrender.com/',
     },
   ];
 

@@ -14,10 +14,8 @@ class SplashScreenCustomScreen extends GetView<SplashScreenCustomController> {
   Widget build(BuildContext context) {
     double h=MediaQuery.of(context).size.height;
     double w=MediaQuery.of(context).size.width;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.startEntrance();
-    });
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child:SafeArea(
             minimum:  EdgeInsets.only(
@@ -138,7 +136,8 @@ class SplashScreenCustomScreen extends GetView<SplashScreenCustomController> {
                             PrimaryButton(
                               text: 'splash.createAccount'.tr,
                               onPressed: () {
-                                controller.goToInscriptionPage();                              },
+                                controller.goToInscriptionPage();
+                              },
                             ),
                             SizedBox(height: 8.r),
                             SecondaryButton(
@@ -151,12 +150,12 @@ class SplashScreenCustomScreen extends GetView<SplashScreenCustomController> {
                             TextLinkButton(
                               text: 'splash.continueWithoutAccount'.tr,
                               onPressed: () {
-                                controller.othersOpacity.value=0.0;
+                                controller.othersOpacity.value = 0.0;
                                 controller.goToHomePage();
                               },
                             ),
                           ],
-                        ),
+                        )
                       ],
                     ),
                   ),

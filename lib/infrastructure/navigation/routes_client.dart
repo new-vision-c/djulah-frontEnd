@@ -1,5 +1,6 @@
 ﻿import 'package:get/get.dart';
 import 'route_names.dart';
+import 'transitions/premium_transitions.dart';
 import '../../presentation/client/test/test.screen.dart';
 import 'bindings/controllers/client.test.controller.binding.dart';
 
@@ -62,6 +63,7 @@ import '../../presentation/client/result_search/result_search.screen.dart';
 import 'bindings/controllers/client.result_search.controller.binding.dart';
 class RoutesClient {
   static List<GetPage> get pages => <GetPage>[
+
     GetPage(
       name: RouteNames.clientTest,
       page: () => const TestScreen(),
@@ -71,66 +73,35 @@ class RoutesClient {
       name: RouteNames.clientSplashScreenCustom,
       page: () => const SplashScreenCustomScreen(),
       binding: ClientSplashScreenCustomControllerBinding(),
+      customTransition: PremiumTransitions.fade,
+      transitionDuration: PremiumTransitions.standardDuration,
+    ),
+    GetPage(
+      name: RouteNames.clientSplashScreenCustom2,
+      page: () => const SplashScreenCustom2Screen(),
+      binding: ClientSplashScreenCustom2ControllerBinding(),
+      customTransition: PremiumTransitions.fade,
+      transitionDuration: PremiumTransitions.standardDuration,
     ),
     GetPage(
       name: RouteNames.clientInscription,
       page: () => const InscriptionScreen(),
       binding: ClientInscriptionControllerBinding(),
-      transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
       name: RouteNames.clientLogin,
       page: () => const LoginScreen(),
       binding: ClientLoginControllerBinding(),
-      transitionDuration: const Duration(milliseconds: 500),
-    ),
-    GetPage(
-      name: RouteNames.clientHome,
-      page: () => const HomeScreen(),
-      binding: ClientHomeControllerBinding(),
     ),
     GetPage(
       name: RouteNames.clientVerificationIdentity,
       page: () => const VerificationIdentityScreen(),
-      transition: Transition.fadeIn,
       binding: ClientVerificationIdentityControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientDashboard,
-      page: () => const DashboardScreen(),
-      transition: Transition.fadeIn,
-      binding: ClientDashboardControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientReservations,
-      page: () => const ReservationsScreen(),
-      transition: Transition.fadeIn,
-      binding: ClientReservationsControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientFavoris,
-      page: () => const FavorisScreen(),
-      transition: Transition.fadeIn,
-      binding: ClientFavorisControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientMessages,
-      page: () => const MessagesScreen(),
-      transition: Transition.fadeIn,
-      binding: ClientMessagesControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientProfil,
-      page: () => const ProfilScreen(),
-      transition: Transition.fadeIn,
-      binding: ClientProfilControllerBinding(),
     ),
     GetPage(
       name: RouteNames.clientForgetPassword,
       page: () => const ForgetPasswordScreen(),
-      transition: Transition.fadeIn,
       binding: ClientForgetPasswordControllerBinding(),
-      transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
       name: RouteNames.clientUpdatePassword,
@@ -138,16 +109,57 @@ class RoutesClient {
       binding: ClientUpdatePasswordControllerBinding(),
     ),
     GetPage(
+      name: RouteNames.clientHome,
+      page: () => const HomeScreen(),
+      binding: ClientHomeControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientDashboard,
+      page: () => const DashboardScreen(),
+      binding: ClientDashboardControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientReservations,
+      page: () => const ReservationsScreen(),
+      binding: ClientReservationsControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientFavoris,
+      page: () => const FavorisScreen(),
+      binding: ClientFavorisControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientMessages,
+      page: () => const MessagesScreen(),
+      binding: ClientMessagesControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientProfil,
+      page: () => const ProfilScreen(),
+      binding: ClientProfilControllerBinding(),
+    ),
+
+    GetPage(
       name: RouteNames.clientDetailsReservations,
       page: () => const DetailsReservationsScreen(),
       binding: ClientDetailsReservationsControllerBinding(),
     ),
-
+    GetPage(
+      name: RouteNames.clientDetailsLogement,
+      page: () => const DetailsLogementScreen(),
+      binding: ClientDetailsLogementControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientReservationSteps,
+      page: () => const ReservationStepsScreen(),
+      binding: ClientReservationStepsControllerBinding(),
+    ),
     GetPage(
       name: RouteNames.clientConversation,
-      page: () =>  ConversationScreen(),
+      page: () => ConversationScreen(),
       binding: ClientConversationControllerBinding(),
     ),
+
     GetPage(
       name: RouteNames.clientInformationsPersonnelles,
       page: () => const InformationsPersonnellesScreen(),
@@ -164,6 +176,17 @@ class RoutesClient {
       binding: ClientParametresControllerBinding(),
     ),
     GetPage(
+      name: RouteNames.clientSecurite,
+      page: () => const SecuriteScreen(),
+      binding: ClientSecuriteControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.clientLangue,
+      page: () => const LangueScreen(),
+      binding: ClientLangueControllerBinding(),
+    ),
+
+    GetPage(
       name: RouteNames.clientTermesUtilisation,
       page: () => const TermesUtilisationScreen(),
       binding: ClientTermesUtilisationControllerBinding(),
@@ -179,39 +202,15 @@ class RoutesClient {
       binding: ClientUtilisationDonneesControllerBinding(),
     ),
     GetPage(
-      name: RouteNames.sharedSuccessPage,
-      page: () => const SuccessPageScreen(),
-      binding: SuccessPageControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientSecurite,
-      page: () => const SecuriteScreen(),
-      binding: ClientSecuriteControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientLangue,
-      page: () => const LangueScreen(),
-      binding: ClientLangueControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientDetailsLogement,
-      page: () => const DetailsLogementScreen(),
-      binding: ClientDetailsLogementControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientReservationSteps,
-      page: () => const ReservationStepsScreen(),
-      binding: ClientReservationStepsControllerBinding(),
-    ),
-    GetPage(
-      name: RouteNames.clientSplashScreenCustom2,
-      page: () => const SplashScreenCustom2Screen(),
-      binding: ClientSplashScreenCustom2ControllerBinding(),
-    ),
-    GetPage(
       name: RouteNames.clientResultSearch,
       page: () => const ResultSearchScreen(),
       binding: ClientResultSearchControllerBinding(),
+    ),
+    GetPage(
+      name: RouteNames.sharedSuccessPage,
+      page: () => const SuccessPageScreen(),
+      binding: SuccessPageControllerBinding(),
+
     ),
   ];
 }

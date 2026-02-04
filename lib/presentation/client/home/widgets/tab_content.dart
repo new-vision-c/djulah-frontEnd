@@ -138,6 +138,11 @@ class TabContentController extends GetxController {
       recommandesPourVous: recommended,
     );
   }
+  
+  /// Méthode de rafraîchissement pour le pull-to-refresh
+  Future<void> onRefresh() async {
+    await _checkLocationAndLoadData();
+  }
 }
 
 class TabContent extends StatelessWidget {
@@ -167,18 +172,20 @@ class TabContent extends StatelessWidget {
             return _buildEmptyState();
           }
 
-          return ListView(
-            padding: EdgeInsets.symmetric(vertical: 28.r),
-            children: [
-              _buildCategorySection(
-                title: "Categories",
-                items: controller.categories,
-              ),
+          return RefreshIndicator(
+            onRefresh: controller.onRefresh,
+            child: ListView(
+              padding: EdgeInsets.symmetric(vertical: 28.r),
+              children: [
+                _buildCategorySection(
+                  title: 'home.categories'.tr,
+                  items: controller.categories,
+                ),
               
               if (controller.logementByDistance.value != null &&
                   controller.logementByDistance.value!.isNotEmpty)
                 _buildSection(
-                  title: "À proximité de vous",
+                  title: 'home.near_you'.tr,
                   height: 249.h,
                   itemCount: controller.logementByDistance.value!.length,
                   itemBuilder: (index) {
@@ -188,7 +195,7 @@ class TabContent extends StatelessWidget {
                 ),
               
               _buildSection(
-                title: "Les plus réservés cette semaine",
+                title: 'home.most_booked'.tr,
                 height: 249.h,
                 itemCount: controller.logementByUse.length,
                 itemBuilder: (index) {
@@ -199,7 +206,7 @@ class TabContent extends StatelessWidget {
               
               if (controller.logementRecommandes.isNotEmpty)
                 _buildSection(
-                  title: "Recommandés pour vous",
+                  title: 'home.recommended'.tr,
                   height: 249.h,
                   itemCount: controller.logementRecommandes.length,
                   itemBuilder: (index) {
@@ -208,6 +215,7 @@ class TabContent extends StatelessWidget {
                   },
                 ),
             ],
+            ),
           );
         });
       },
@@ -316,7 +324,7 @@ class TabContent extends StatelessWidget {
           Icon(Icons.home_work_outlined, size: 64.r, color: const Color(0xFFC9C9C9)),
           SizedBox(height: 16.h),
           Text(
-            "Aucun logement trouvé",
+            'home.no_property_found'.tr,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
@@ -327,7 +335,7 @@ class TabContent extends StatelessWidget {
           Padding(
             padding:  EdgeInsets.symmetric(horizontal: 16.r),
             child: Text(
-              "Nous n'avons trouvé aucun élément correspondant à ce type pour le moment.",
+              'home.no_property_message'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,

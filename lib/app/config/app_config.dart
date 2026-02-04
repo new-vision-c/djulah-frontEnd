@@ -5,13 +5,26 @@ class AppConfig {
   static late AppType appType;
   static late String apiBaseUrl;
   static late String appName;
-  // paddingAdaptationPixelPerfect =EdgeInsets.all(21.r),
-  
-  // Loading global de l'application
   static RxBool isLoadingApp = false.obs;
+  static RxString loadingMessage = ''.obs;
+  static Rx<LoadingPosition> loadingPosition = LoadingPosition.center.obs;
   static RxInt limitCharPassword = 8.obs;
+  
+  // Timeout réseau commun (en secondes)
+  static const int networkTimeoutSeconds = 30;
+  static const Duration networkTimeout = Duration(seconds: networkTimeoutSeconds);
 
+  static void showLoading({String? message, LoadingPosition position = LoadingPosition.center}) {
+    isLoadingApp.value = true;
+    loadingMessage.value = message ?? '';
+    loadingPosition.value = position;
+  }
 
+  static void hideLoading() {
+    isLoadingApp.value = false;
+    loadingMessage.value = '';
+    loadingPosition.value = LoadingPosition.center;
+  }
 
   static void configure({
     required AppType appType,

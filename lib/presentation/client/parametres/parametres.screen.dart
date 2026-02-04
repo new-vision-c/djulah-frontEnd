@@ -17,7 +17,7 @@ class ParametresScreen extends GetView<ParametresController> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBarCustom(title: "Paramètres"),
+            AppBarCustom(title: 'settings.title'.tr),
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 16.r),
@@ -28,7 +28,7 @@ class ParametresScreen extends GetView<ParametresController> {
                     Option(
                       imagePath:
                           "assets/images/client/profil_icons/languagesIcon.png",
-                      title: "Langue",
+                      title: 'settings.language'.tr,
                       background: Colors.white,
                       onTap: () {
                         Get.toNamed(RouteNames.clientLangue);
@@ -37,7 +37,7 @@ class ParametresScreen extends GetView<ParametresController> {
                     Option(
                       imagePath:
                           "assets/images/client/profil_icons/security-safe.png",
-                      title: "Sécurité",
+                      title: 'settings.security'.tr,
                       background: Colors.white,
                       onTap: () {
                         Get.toNamed(RouteNames.clientSecurite);

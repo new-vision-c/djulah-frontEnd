@@ -139,7 +139,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    controller.propriete?.priceText ?? "Prix non disponible",
+                    controller.propriete?.priceText ?? 'property.price_unavailable'.tr,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
@@ -149,7 +149,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                     ),
                   ),
                   Text(
-                    "Réservez maintenant",
+                    'property.book_now'.tr,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
@@ -162,7 +162,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
               ),
               Spacer(),
               PrimaryButton(
-                text: "Réserver",
+                text: 'property.book'.tr,
                 width: 146.w,
                 onPressed: () {
                   Get.toNamed(RouteNames.clientReservationSteps);
@@ -180,7 +180,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
     return Column(
       children: [
         Text(
-          logement?.title ?? "Logement",
+          logement?.title ?? 'property.title'.tr,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24.sp,
@@ -243,14 +243,14 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hôte : ${host?.name ?? 'Hôte Djulah'}",
+                    'property.host'.tr + " : ${host?.name ?? 'Hôte Djulah'}",
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
-                    "Hôte depuis ${host?.yearsAsHost ?? 1} an${(host?.yearsAsHost ?? 1) > 1 ? 's' : ''}",
+                    'property.host_since'.trParams({'years': (host?.yearsAsHost ?? 1).toString(), 'plural': (host?.yearsAsHost ?? 1) > 1 ? 's' : ''}),
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: const Color(0xFF4B4B4B),
@@ -293,7 +293,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
         if (hasLongDescription) ...[
           SizedBox(height: 16.h),
           PrimaryButton(
-            text: "Lire la suite",
+            text: 'property.read_more'.tr,
             textColor: Colors.black,
             backgroundColor: const Color(0xFFF3F3F3),
             onPressed: () => _showFullDescription(description),
@@ -321,7 +321,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "À propos de ce logement",
+                  'property.about_property'.tr,
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
@@ -363,7 +363,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
       children: [
         SizedBox(height: 28.h),
         Text(
-          "Ce que propose ce logement",
+          'property.what_offers'.tr,
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
         ),
         SizedBox(height: 24.h),
@@ -377,7 +377,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
         SizedBox(height: 24.h),
         if (totalAmenities > 4)
           PrimaryButton(
-            text: "Afficher les $totalAmenities équipements",
+            text: 'property.show_amenities'.trParams({'count': totalAmenities.toString()}),
             textColor: Colors.black,
             backgroundColor: const Color(0xFFF3F3F3),
             onPressed: () => _showAllAmenities(amenities),
@@ -418,7 +418,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Ce que propose ce logement",
+                  'property.what_offers'.tr,
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
@@ -449,10 +449,10 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
 
   List<Widget> _buildDefaultAmenities() {
     return [
-      _buildAmenityItem(Assets.propositionLogementCooking, "Cuisine"),
-      _buildAmenityItem(Assets.propositionLogementWifi, "Wifi"),
-      _buildAmenityItem(Assets.propositionLogementTvMinimal, "Télévision"),
-      _buildAmenityItem(Assets.propositionLogementCarFront, "Parking gratuit sur place"),
+      _buildAmenityItem(Assets.propositionLogementCooking, 'property.kitchen'.tr),
+      _buildAmenityItem(Assets.propositionLogementWifi, 'property.wifi'.tr),
+      _buildAmenityItem(Assets.propositionLogementTvMinimal, 'property.tv'.tr),
+      _buildAmenityItem(Assets.propositionLogementCarFront, 'property.free_parking'.tr),
     ];
   }
 
@@ -498,7 +498,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
         Divider(color: const Color(0xFFE8E8E8), thickness: 1.r),
         SizedBox(height: 28.h),
         Text(
-          "Où se trouve ce logement",
+          'property.where_located'.tr,
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
@@ -536,7 +536,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                   Icon(Icons.location_off, size: 40.r, color: ClientTheme.textTertiaryColor),
                   SizedBox(height: 8.h),
                   Text(
-                    'Localisation non disponible',
+                    'property.location_unavailable'.tr,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: ClientTheme.textTertiaryColor,
@@ -570,8 +570,8 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
             ),
             Text(
               reviewCount > 0
-                  ? "${rating.toStringAsFixed(1).replaceAll('.', ',')} - $reviewCount commentaire${reviewCount > 1 ? 's' : ''}"
-                  : "Aucun commentaire",
+                  ? "${rating.toStringAsFixed(1).replaceAll('.', ',')} - $reviewCount ${'property.reviews'.tr}"
+                  : 'property.no_reviews'.tr,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -603,7 +603,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
         SizedBox(height: 22.h),
         if (reviewCount > 0)
           PrimaryButton(
-            text: "Afficher les $reviewCount commentaires",
+            text: 'property.show_reviews'.trParams({'count': reviewCount.toString()}),
             textColor: Colors.black,
             backgroundColor: const Color(0xFFF3F3F3),
             onPressed: () => _showAllReviews(reviews),
@@ -617,7 +617,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
       padding: EdgeInsets.all(24.r),
       child: Center(
         child: Text(
-          "Aucun commentaire pour le moment",
+          'property.no_reviews_yet'.tr,
           style: TextStyle(
             fontSize: 14.sp,
             color: ClientTheme.textTertiaryColor,
@@ -673,7 +673,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
           SizedBox(height: 16.h),
           if (review.comment.length > 100)
             TextLinkButton(
-              text: "Afficher tout le message",
+              text: 'property.show_full_message'.tr,
               underline: true,
               fontSize: 14.sp,
               textColor: Colors.black,
@@ -740,7 +740,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${reviews.length} commentaires",
+                  "${reviews.length} ${'property.reviews'.tr}",
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
@@ -849,7 +849,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Faites connaissance avec votre hôte",
+          'property.meet_host'.tr,
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
@@ -910,7 +910,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                       ),
                     ),
                     Text(
-                      "Hôte",
+                      'property.host'.tr,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
@@ -939,7 +939,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                       ),
                     ),
                     Text(
-                      "évaluations",
+                      'property.evaluations'.tr,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
@@ -968,7 +968,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                       ],
                     ),
                     Text(
-                      "Note globale",
+                      'property.global_rating'.tr,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
@@ -991,7 +991,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
                       ),
                     ),
                     Text(
-                      "En tant qu'hôte",
+                      'property.as_host'.tr,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
@@ -1015,7 +1015,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
               child: Image.asset(Assets.clientLanguageSquare, fit: BoxFit.cover),
             ),
             Text(
-              "Langue parlée par l'hôte :",
+              'property.host_language'.tr,
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
@@ -1040,7 +1040,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
         ),
         SizedBox(height: 28.h),
         PrimaryButton(
-          text: "Envoyer un message à l'hôte",
+          text: 'property.message_host'.tr,
           textColor: Colors.black,
           backgroundColor: const Color(0xFFF3F3F3),
           onPressed: () {
@@ -1048,7 +1048,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
         ),
         SizedBox(height: 28.h),
         Text(
-          "Taux de réponse : $responseRate%\nL'hôte répond généralement $responseTime",
+          '${'property.response_rate'.trParams({'rate': responseRate.toString()})}\n${'property.response_time'.trParams({'time': responseTime})}',
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
@@ -1070,7 +1070,7 @@ class DetailsLogementScreen extends GetView<DetailsLogementController> {
             SizedBox(width: 22.w),
             Expanded(
               child: Text(
-                "Afin de protéger votre paiement, utilisez toujours Djulah pour envoyer de l'argent et communiquer avec les hôtes",
+                'property.payment_warning'.tr,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

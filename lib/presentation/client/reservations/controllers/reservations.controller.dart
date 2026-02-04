@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../../../domain/entities/reservation.dart';
+import '../../../../domain/enums/status_reservation.dart';
 
 class ReservationsController extends GetxController {
   final isLoading = true.obs;
@@ -104,6 +105,27 @@ class ReservationsController extends GetxController {
         price: "15 000 XAF",
         imagePath: "assets/images/client/imagesSplash/2.jpg",
         status: "Confirmé",
+        statusEnum: ReservationStatus.confirmer,
+        isCurrent: false,
+      ),
+      ReservationModel(
+        id: 'res_r011',
+        title: "Duplex moderne - Biyem-Assi, Yaoundé",
+        date: "15/01/2026",
+        price: "95 000 XAF",
+        imagePath: "assets/images/client/imagesSplash/3.jpg",
+        status: "Rejeté",
+        statusEnum: ReservationStatus.rejeter,
+        isCurrent: false,
+      ),
+      ReservationModel(
+        id: 'res_r012',
+        title: "Appartement standing - Deido, Douala",
+        date: "20/01/2026",
+        price: "70 000 XAF",
+        imagePath: "assets/images/client/imagesSplash/1.jpg",
+        status: "Annulé",
+        statusEnum: ReservationStatus.annuler,
         isCurrent: false,
       ),
     ];
@@ -118,6 +140,8 @@ class ReservationsController extends GetxController {
         return reservations.where((r) => r.status == "Annulé").toList();
       case 2:
         return reservations.where((r) => r.status == "En attente").toList();
+      case 3:
+        return reservations.where((r) => r.status == "Rejeté").toList();
       default:
         return reservations.toList();
     }
@@ -129,5 +153,10 @@ class ReservationsController extends GetxController {
     selectedFilter.value = index;
     await Future.delayed(const Duration(milliseconds: 500));
     isLoading.value = false;
+  }
+  
+  /// Méthode de rafraîchissement pour le pull-to-refresh
+  Future<void> onRefresh() async {
+    await fetchReservations();
   }
 }

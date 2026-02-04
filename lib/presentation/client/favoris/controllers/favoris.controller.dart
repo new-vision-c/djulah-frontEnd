@@ -108,4 +108,9 @@ class FavorisController extends GetxController {
   
   /// Vérifie si la liste des vus récemment est vide
   bool get hasRecentlyViewed => vuRecemment.isNotEmpty;
+  
+  /// Méthode de rafraîchissement pour le pull-to-refresh
+  Future<void> onRefresh() async {
+    await _loadData();
+  }
 }

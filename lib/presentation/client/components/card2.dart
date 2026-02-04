@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import '../../../domain/entities/logement.dart';
 import '../../../infrastructure/navigation/route_names.dart';
 import '../../../infrastructure/theme/client_theme.dart';
 import '../../components/carousel_fade/carousel_fade.widget.dart';
 import '../favoris/controllers/favoris.controller.dart';
+import 'animated_heart_button.dart';
 
-class AppCard2 extends StatelessWidget{
+class AppCard2 extends StatelessWidget {
   final EnregistrementModel item;
-  final bool isFavoris;
-  const AppCard2({super.key, required this.item, this.isFavoris = false});
+  
+  const AppCard2({super.key, required this.item});
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Récupérer la Propriété complète depuis l'ID
         final propriete = MockupLogements.logements.firstWhereOrNull(
           (p) => p.id == item.id
         );
@@ -46,17 +46,10 @@ class AppCard2 extends StatelessWidget{
               Positioned(
                 top: 12.r,
                 right: 12.r,
-                child: isFavoris
-                    ? Image.asset(
-                        "assets/images/client/heart_fill.png",
-                        width: 24.r,
-                        height: 24.r,
-                      )
-                    : SvgPicture.asset(
-                        "assets/images/client/heart_card.svg",
-                        width: 24.r,
-                        height: 24.r,
-                      ),
+                child: AnimatedHeartButton(
+                  propertyId: item.id,
+                  size: 24,
+                ),
               ),
             ],
           ),

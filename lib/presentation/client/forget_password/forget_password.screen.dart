@@ -13,13 +13,13 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       body: SafeArea(
         minimum: EdgeInsets.only(
           left: 16.r, right: 16.r, top: 64.r,bottom: 20.r ),
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
-            //TODO: NE MARCHE PAS
           },
           child: Column(
             mainAxisSize: MainAxisSize.max,

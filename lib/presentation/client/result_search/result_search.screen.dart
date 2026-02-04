@@ -29,10 +29,15 @@ class ResultSearchScreen extends GetView<ResultSearchController> {
                 height: double.infinity,
                 propertyLocations: controller.propertyLocations.toList(),
                 showFullscreenButton: false,
-                showPOIs: true,
                 markerColor: Colors.black,
                 overlayOpacity: 0.2,
-                initialZoom: 16.5,
+                initialZoom: 18,
+                disableMarkerAnimation: true,
+                markerSize: 40.r,
+                showCenterMarker: false,
+                onCameraIdle: (bounds) {
+                  controller.onMapBoundsChanged(bounds);
+                },
                 onPropertyTap: (property) {
                   final logement = controller.logements.firstWhereOrNull(
                     (l) => l.id == property.id,
@@ -201,7 +206,15 @@ class ResultSearchScreen extends GetView<ResultSearchController> {
           SizedBox(width: 12.w),
           GestureDetector(
             onTap: () {
-              SearchModal.show(context);
+              SearchModal.show(
+                context,
+                onLocationSelected: (location) {
+                  controller.refreshSearch({
+                    'location': location,
+                    ...?controller.filters.value,
+                  });
+                },
+              );
             },
             child: Container(
               width: 270.w,
@@ -339,7 +352,6 @@ class ResultSearchScreen extends GetView<ResultSearchController> {
                   padding: EdgeInsets.only(bottom: 24.h),
                   child: AppCard2(
                     item: _logementToEnregistrement(logement),
-                    isFavoris: false,
                   ),
                 );
               },
@@ -447,7 +459,6 @@ class ResultSearchScreen extends GetView<ResultSearchController> {
   }
 }
 
-// Helper function to convert Logement to EnregistrementModel
 EnregistrementModel _logementToEnregistrement(Logement logement) {
   return EnregistrementModel(
     id: logement.id,

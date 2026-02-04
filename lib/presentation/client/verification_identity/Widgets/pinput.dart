@@ -30,6 +30,7 @@ class PinController extends GetxController {
           try {
             final verificationController = Get.find<VerificationIdentityController>();
             verificationController.isPinComplete.value = true;
+            verificationController.otp.value = pin.value;
           } catch (e) {
             print('Controller not found: $e');
           }
@@ -38,6 +39,7 @@ class PinController extends GetxController {
           try {
             final verificationController = Get.find<VerificationIdentityController>();
             verificationController.isPinComplete.value = false;
+            verificationController.otp.value = pin.value;
           } catch (e) {
             print('Controller not found: $e');
           }

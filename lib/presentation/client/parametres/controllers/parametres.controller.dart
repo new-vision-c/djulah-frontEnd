@@ -1,9 +1,6 @@
 import 'package:get/get.dart';
 
 class ParametresController extends GetxController {
-  //TODO: Implement ParametresController
-
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -18,6 +15,4 @@ class ParametresController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

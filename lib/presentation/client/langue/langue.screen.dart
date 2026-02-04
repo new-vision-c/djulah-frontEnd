@@ -15,7 +15,7 @@ class LangueScreen extends GetView<LangueController> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBarCustom(title: "Langue"),
+            AppBarCustom(title: 'language.title'.tr),
             Divider(color: Color(0xFFE8E8E8), height: 1.r, thickness: 1.r),
             Expanded(
               child: Container(
@@ -26,7 +26,7 @@ class LangueScreen extends GetView<LangueController> {
                     children: [
                       RadioListTile<String>(
                         title: Text(
-                          "Français",
+                          'language.french'.tr,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -39,12 +39,14 @@ class LangueScreen extends GetView<LangueController> {
                         groupValue: controller.selected.value,
                         controlAffinity: ListTileControlAffinity.trailing,
                         onChanged: (value) {
-                          controller.selected.value = value!;
+                          if (value != null) {
+                            controller.changeLanguage(value);
+                          }
                         },
                       ),
                       RadioListTile<String>(
                         title: Text(
-                          "Anglais",
+                          'language.english'.tr,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -57,7 +59,9 @@ class LangueScreen extends GetView<LangueController> {
                         groupValue: controller.selected.value,
                         controlAffinity: ListTileControlAffinity.trailing,
                         onChanged: (value) {
-                          controller.selected.value = value!;
+                          if (value != null) {
+                            controller.changeLanguage(value);
+                          }
                         },
                       ),
                     ],

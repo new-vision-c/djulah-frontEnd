@@ -6,7 +6,27 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "continue": "Continue",
-    "back": "Back"
+    "back": "Back",
+    "save": "Save",
+    "modify": "Modify",
+    "delete": "Delete",
+    "error": "Error",
+    "success": "Success",
+    "error_occurred": "An error occurred",
+    "session_expired": "Session expired. Please log in again.",
+    "network_error": "Connection problem. Check your network.",
+    "try_again": "Please try again"
+  },
+  "network": {
+    "checking": "Checking...",
+    "noInternet": "No internet connection",
+    "internetRestored": "Internet connection restored",
+    "serverUnavailable": "Sorry, the server is unavailable. Please try again.",
+    "connectionProblem": "Connection problem. Check your network.",
+    "serverError": "Server error. Try again later.",
+    "invalidRequest": "Invalid request",
+    "errorOccurred": "An error occurred",
+    "backendConnected": "Backend connected"
   },
   "splash": {
     "title": "A home that suits you, in just a few minutes.",
@@ -16,7 +36,9 @@
   },
   "auth": {
     "welcome": "Welcome to Djulah",
+    "welcomeBack": "Welcome back",
     "signupSubtitle": "A few details to create your account and enjoy Djula to the fullest.",
+    "loginSubtitle": "Sign in to continue your search where you left off.",
     "continueWithGoogle": "Continue with Google",
     "continueWithApple": "Continue with Apple",
     "orContinueWithEmail": "Or continue with email",
@@ -27,13 +49,35 @@
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
     "alreadyHaveAccount": "Already have an account?",
-    "login": "Sign in"
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "login": "Sign in",
+    "logout": "Log out",
+    "forgotPassword": "Forgot password?",
+    "fill_all_fields": "Please fill in all fields correctly",
+    "login_success": "Login successful, welcome @name",
+    "invalid_credentials": "Invalid email or password",
+    "account_locked": "Your account has been locked",
+    "account_not_verified": "Your account is not yet verified. Please register again.",
+    "login_error": "Login error. Please try again.",
+    "sessionExpired": "Session expired. Reconnection required.",
+    "accountLockedContact": "Your account is locked. Contact support."
+  },
+  "google": {
+    "error_title": "Google Error",
+    "error_message": "Unable to sign in with Google. Please try again.",
+    "connection_error": "An error occurred during Google sign-in"
+  },
+  "apple": {
+    "coming_soon": "Apple Sign-In will be available soon"
   },
   "validation": {
     "emailRequired": "Email is required",
     "emailInvalid": "Incorrect Email",
     "enterValidEmail": "Enter a valid email",
-    "passwordMinLength": "Password must be at least @count characters"
+    "passwordMinLength": "Password must be at least @count characters",
+    "passwordComplexity": "Password must contain at least 2 different character types (lowercase, uppercase, numbers, special characters)"
   },
   "verification": {
     "title": "Confirm it's you",
@@ -42,6 +86,169 @@
     "codeLabel": "Verification code",
     "resendIn": "Send a new code in:",
     "timerComplete": "Complete!",
-    "timerCompleteMessage": "The countdown is complete"
+    "timerCompleteMessage": "The countdown is complete",
+    "enter_6_digits": "Please enter the 6-digit code",
+    "success": "Verification successful!",
+    "invalid_code": "The OTP code entered is incorrect",
+    "expired_code": "The OTP code has expired. Request a new code.",
+    "user_not_found": "User not found",
+    "already_verified": "Your account is already verified",
+    "error": "Verification error. Please try again.",
+    "code_resent": "Code resent successfully",
+    "too_many_requests": "Please wait before resending the code",
+    "resend_error": "Error resending code. Please try again."
+  },
+  "profile": {
+    "title": "Profile",
+    "personal_info": "Personal information",
+    "name_empty": "Name cannot be empty",
+    "update_success": "Profile updated successfully",
+    "tap_to_change_photo": "Tap to change photo"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "security": "Security",
+    "privacy_policy": "Privacy Policy"
+  },
+  "language": {
+    "title": "Language",
+    "french": "French",
+    "english": "English",
+    "changed_success": "Language changed successfully"
+  },
+  "security": {
+    "title": "Security",
+    "password": "Password",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "confirm_password": "Confirm password",
+    "password_updated": "Password updated successfully",
+    "invalid_current_password": "Current password is incorrect",
+    "weak_password": "New password must be at least 8 characters",
+    "enter_password": "Please enter your password"
+  },
+  "account": {
+    "delete_title": "Delete my account",
+    "delete_warning": "This action is irreversible. All your data will be permanently deleted.",
+    "delete_confirm": "Enter your password to confirm:",
+    "deleted_success": "Your account has been successfully deleted",
+    "invalid_password": "Password is incorrect"
+  },
+  "loading": {
+    "updating": "Updating...",
+    "deleting": "Deleting...",
+    "logout": "Logging out..."
+  },
+  "navigation": {
+    "explore": "Explore",
+    "reservations": "Reservations",
+    "favorites": "Favorites",
+    "messages": "Messages",
+    "profile": "Profile"
+  },
+  "home": {
+    "start_search": "Start my search",
+    "furnished": "Furnished",
+    "unfurnished": "Unfurnished",
+    "commercial": "Commercial",
+    "categories": "Categories",
+    "near_you": "Near you",
+    "most_booked": "Most booked this week",
+    "recommended": "Recommended for you",
+    "no_property_found": "No property found",
+    "no_property_message": "We couldn't find any items matching this type at the moment."
+  },
+  "search": {
+    "where": "Where?",
+    "when": "When",
+    "add_dates": "Add dates",
+    "property_type": "Property type",
+    "add_types": "Add types",
+    "suggestions": "Suggestions",
+    "quick_options": "Quick options",
+    "choose_date": "Choose a date",
+    "select_type": "Select a type",
+    "yesterday": "Yesterday",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "clear_all": "Clear all",
+    "search_button": "Search",
+    "no_results": "No results found",
+    "try_other_search": "Try with a different search term",
+    "connection_error": "Connection error",
+    "retry": "Retry"
+  },
+  "reservations": {
+    "title": "Reservations",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "nothing_here": "Nothing here yet",
+    "find_all_reservations": "Find all your reservations here once you make one... We're waiting for you",
+    "details": "Details",
+    "date": "Date",
+    "total_price": "Total price",
+    "cancel_warning": "If you cancel before the expected arrival on @date, you will be entitled to a partial refund",
+    "view_full_conditions": "View full conditions",
+    "cancel_reservation": "Cancel reservation",
+    "book_again": "Book again",
+    "report_issue": "Report an issue"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "recently_viewed": "Recently viewed",
+    "saved": "Saved",
+    "saved_count": "@count saved favorites",
+    "nothing_here": "Nothing here yet",
+    "find_favorites": "Find all your favorites here, see you soon",
+    "remove_title": "Remove from favorites",
+    "remove_confirm": "Do you really want to remove this property from your favorites?",
+    "remove_button": "Remove"
+  },
+  "property": {
+    "title": "Property",
+    "price_unavailable": "Price unavailable",
+    "book_now": "Book now",
+    "book": "Book",
+    "host": "Host",
+    "host_since": "Host for @years year@plural",
+    "what_offers": "What this property offers",
+    "show_amenities": "Show all @count amenities",
+    "about_property": "About this property",
+    "read_more": "Read more",
+    "where_located": "Where this property is located",
+    "location_unavailable": "Location unavailable",
+    "reviews": "reviews",
+    "no_reviews": "No reviews",
+    "no_reviews_yet": "No reviews yet",
+    "show_reviews": "Show all @count reviews",
+    "show_full_message": "Show full message",
+    "meet_host": "Meet your host",
+    "evaluations": "reviews",
+    "global_rating": "Overall rating",
+    "as_host": "As host",
+    "host_language": "Language spoken by host:",
+    "message_host": "Send a message to host",
+    "response_rate": "Response rate: @rate%",
+    "response_time": "Host typically responds @time",
+    "payment_warning": "To protect your payment, always use Djulah to send money and communicate with hosts",
+    "kitchen": "Kitchen",
+    "wifi": "Wifi",
+    "tv": "Television",
+    "free_parking": "Free on-site parking"
+  },
+  "profil_screen": {
+    "customize": "Customize",
+    "personal_info": "Personal information",
+    "history": "History",
+    "accessibility": "Accessibility",
+    "settings": "Settings",
+    "privacy": "Privacy",
+    "terms": "Terms of use",
+    "privacy_policy": "Privacy policy",
+    "data_usage": "Data usage",
+    "logout": "Log out"
   }
 }

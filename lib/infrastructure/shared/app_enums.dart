@@ -1,5 +1,7 @@
 enum AppType { client, pro }
 
+enum LoadingPosition { center, bottom }
+
 enum BackendReachability {
   unknown,
   reachable,

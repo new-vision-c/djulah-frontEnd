@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class NotFound extends StatelessWidget{
   @override
@@ -11,7 +12,7 @@ class NotFound extends StatelessWidget{
         Image.asset("assets/images/not_found/reservation.png",height: 300.r,width: 300.r,),
         SizedBox(height: 40.r),
         Text(
-          "Rien ici pour le moment",
+          'reservations.nothing_here'.tr,
           style: TextStyle(
             fontSize: 24.sp,
             fontStyle: FontStyle.normal,
@@ -23,7 +24,7 @@ class NotFound extends StatelessWidget{
         SizedBox(height: 8.r,),
         Text(
           textAlign: TextAlign.center,
-            "Retrouvez toutes vos réservations ici fois que vous en aurez fait une ... On vous attends",
+            'reservations.find_all_reservations'.tr,
             style: TextStyle(
               fontSize: 16.sp,
               fontStyle: FontStyle.normal,

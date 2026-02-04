@@ -6,7 +6,10 @@ import 'package:flutter/widgets.dart';
 
 class AppStorage {
   static const _tokenKey = 'user_token';
+  static const _tokenExpiryKey = 'user_token_expiry';
   static const _refreshTokenKey = 'refresh_token';
+  static const _sessionTokenKey = 'session_token';
+  static const _sessionTokenExpiryKey = 'session_token_expiry';
   static const _localeKey = 'app_locale';
 
   static const supportedLocales = <Locale>[
@@ -19,7 +22,10 @@ class AppStorage {
   final EncryptedSharedPreferences _storage;
 
   String? _token;
+  DateTime? _tokenExpiry;
   String? _refreshToken;
+  String? _sessionToken;
+  DateTime? _sessionTokenExpiry;
   Locale _locale = fallbackLocale;
 
   AppStorage._(this._storage);
@@ -47,6 +53,33 @@ class AppStorage {
   Future<void> _load() async {
     _token = await _storage.getString(_tokenKey);
     _refreshToken = await _storage.getString(_refreshTokenKey);
+    _sessionToken = await _storage.getString(_sessionTokenKey);
+    
+    // Charger l'expiration du token
+    final tokenExpiryString = await _storage.getString(_tokenExpiryKey);
+    if (tokenExpiryString != null) {
+      _tokenExpiry = DateTime.tryParse(tokenExpiryString);
+      
+      // Vérifier si le token a expiré
+      if (_tokenExpiry != null && DateTime.now().isAfter(_tokenExpiry!)) {
+        // Supprimer le token expiré
+        await removeToken();
+        print('Token expiré supprimé automatiquement');
+      }
+    }
+    
+    // Charger l'expiration du sessionToken
+    final sessionExpiryString = await _storage.getString(_sessionTokenExpiryKey);
+    if (sessionExpiryString != null) {
+      _sessionTokenExpiry = DateTime.tryParse(sessionExpiryString);
+      
+      // Vérifier si le sessionToken a expiré
+      if (_sessionTokenExpiry != null && DateTime.now().isAfter(_sessionTokenExpiry!)) {
+        // Supprimer le sessionToken expiré
+        await removeSessionToken();
+        print('SessionToken expiré supprimé automatiquement');
+      }
+    }
 
     final savedLocale = await _storage.getString(_localeKey);
     if (savedLocale != null && savedLocale.isNotEmpty) {
@@ -61,8 +94,35 @@ class AppStorage {
     _locale = _closestSupported(device) ?? fallbackLocale;
   }
 
-  String? get token => _token;
+  String? get token {
+    // Vérifier si le token a expiré
+    if (_token != null && _tokenExpiry != null) {
+      if (DateTime.now().isAfter(_tokenExpiry!)) {
+        // Token expiré, le supprimer et retourner null
+        removeToken();
+        return null;
+      }
+    }
+    return _token;
+  }
+  
+  bool get isTokenValid {
+    return _token != null && 
+           _tokenExpiry != null && 
+           DateTime.now().isBefore(_tokenExpiry!);
+  }
   String? get refreshToken => _refreshToken;
+  
+  String? get sessionToken {
+    if (_sessionToken != null && _sessionTokenExpiry != null) {
+      if (DateTime.now().isAfter(_sessionTokenExpiry!)) {
+        removeSessionToken();
+        return null;
+      }
+    }
+    return _sessionToken;
+  }
+  
   Locale get locale => _locale;
 
   String get languageHeaderValue => _locale.languageCode;
@@ -70,11 +130,17 @@ class AppStorage {
   Future<void> saveToken(String token) async {
     _token = token;
     await _storage.setString(_tokenKey, token);
+    
+    _tokenExpiry = DateTime.now().add(Duration(days: 7));
+    await _storage.setString(_tokenExpiryKey, _tokenExpiry!.toIso8601String());
+    print('Token sauvegardé avec expiration: $_tokenExpiry');
   }
 
   Future<void> removeToken() async {
     _token = null;
+    _tokenExpiry = null;
     await _storage.remove(_tokenKey);
+    await _storage.remove(_tokenExpiryKey);
   }
 
   Future<void> saveRefreshToken(String refreshToken) async {
@@ -87,9 +153,26 @@ class AppStorage {
     await _storage.remove(_refreshTokenKey);
   }
 
+  Future<void> saveSessionToken(String sessionToken) async {
+    _sessionToken = sessionToken;
+    await _storage.setString(_sessionTokenKey, sessionToken);
+    
+    _sessionTokenExpiry = DateTime.now().add(Duration(days: 7));
+    await _storage.setString(_sessionTokenExpiryKey, _sessionTokenExpiry!.toIso8601String());
+    print('SessionToken sauvegardé avec expiration: ${_sessionTokenExpiry}');
+  }
+
+  Future<void> removeSessionToken() async {
+    _sessionToken = null;
+    _sessionTokenExpiry = null;
+    await _storage.remove(_sessionTokenKey);
+    await _storage.remove(_sessionTokenExpiryKey);
+  }
+
   Future<void> clearAuth() async {
     await removeToken();
     await removeRefreshToken();
+    await removeSessionToken();
   }
 
   Future<void> saveLocale(Locale locale) async {

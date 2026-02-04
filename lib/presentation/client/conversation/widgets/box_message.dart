@@ -80,7 +80,6 @@ class BoxMessage extends StatelessWidget {
               SizedBox(width: 4.w),
               _buildStatusIcon(),
             ],
-            // Bouton de retry pour les messages échoués
             if (isMe && status == MessageStatus.failed && onRetry != null) ...[
               SizedBox(width: 8.w),
               GestureDetector(

@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:djulah/app/config/app_config.dart';
-import 'package:djulah/app/services/profile_image_service.dart';
+import 'package:djulah/app/services/profile_cache_service.dart';
+import 'package:djulah/datas/local_storage/app_storage.dart';
 import 'package:djulah/generated/assets.dart';
 import 'package:djulah/infrastructure/navigation/route_names.dart';
 import 'package:djulah/presentation/client/components/option.dart';
+import 'package:djulah/presentation/client/components/profil_avatar.dart';
 import 'package:djulah/presentation/components/shimmer_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,63 +41,78 @@ class ProfilScreen extends GetView<ProfilController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 16.h),
-        _sectionTitle("Customisé"),
+        _sectionTitle('profil_screen.customize'.tr),
         SizedBox(height: 16.h),
         Option(
-          title: "Informations personnelles",
+          title: 'profil_screen.personal_info'.tr,
           imagePath: Assets.profilIconsUser,
           onTap: () => Get.toNamed(RouteNames.clientInformationsPersonnelles),
         ),
         SizedBox(height: 16.h),
         Option(
-          title: "Historique",
+          title: 'profil_screen.history'.tr,
           imagePath: Assets.profilIconsListRestart,
           onTap: () => Get.toNamed(RouteNames.clientHistorique),
         ),
         SizedBox(height: 28.h),
-        _sectionTitle("Accessibilité"),
+        _sectionTitle('profil_screen.accessibility'.tr),
         SizedBox(height: 16.h),
         Option(
-          title: "Parametres",
+          title: 'profil_screen.settings'.tr,
           imagePath: Assets.profilIconsUser,
           onTap: () => Get.toNamed(RouteNames.clientParametres),
         ),
         SizedBox(height: 28.h),
-        _sectionTitle("Confidentialité"),
+        _sectionTitle('profil_screen.privacy'.tr),
         SizedBox(height: 16.h),
         Option(
-          title: "Termes d'utilisation",
+          title: 'profil_screen.terms'.tr,
           imagePath: Assets.profilIconsBookText,
           onTap: () => Get.toNamed(RouteNames.clientTermesUtilisation),
         ),
         SizedBox(height: 16.h),
         Option(
-          title: "Politique de confidentialité",
+          title: 'profil_screen.privacy_policy'.tr,
           imagePath: Assets.profilIconsShieldAlert,
           onTap: () => Get.toNamed(RouteNames.clientPolitiqueConfidentialite),
         ),
         SizedBox(height: 16.h),
         Option(
-          title: "Utilisation des données",
+          title: 'profil_screen.data_usage'.tr,
           imagePath: Assets.profilIconsDatabase,
           onTap: () => Get.toNamed(RouteNames.clientUtilisationDonnees),
         ),
         SizedBox(height: 28.h),
         Option(
-          title: "Se déconnecter",
+          title: 'profil_screen.logout'.tr,
           isLogouted: true,
           imagePath: Assets.profilIconsLogOut,
-          onTap: () {
-            AppConfig.isLoadingApp.value = true;
-            Future.delayed(const Duration(seconds: 2)).then((_) {
-              Get.offAllNamed(RouteNames.clientLogin);
-              AppConfig.isLoadingApp.value = false;
-            });
-          },
+          onTap: () => _logout(),
         ),
         SizedBox(height: 32.h),
       ],
     );
+  }
+  
+  /// Déconnexion : supprime les tokens et redirige vers login
+  Future<void> _logout() async {
+    AppConfig.showLoading(message: 'loading.logout'.tr);
+    
+    try {
+      // Supprimer tous les tokens
+      final storage = Get.find<AppStorage>();
+      await storage.clearAuth();
+      
+      // Vider le cache du profil
+      if (Get.isRegistered<ProfileCacheService>()) {
+        Get.find<ProfileCacheService>().clearCache();
+      }
+      
+      // Rediriger vers login
+      Get.offAllNamed(RouteNames.clientLogin);
+    } finally {
+      AppConfig.hideLoading();
+    }
   }
 
   Widget _sectionTitle(String title) {
@@ -169,66 +184,60 @@ class _ProfilHeaderDelegate extends SliverPersistentHeaderDelegate {
       final isLoading = controller.isLoading.value;
       final userName = controller.userName.value;
       final memberSince = controller.memberSince.value;
+      
+      // Calcul des opacités/scales pour le bouton d'édition
+      final double editButtonOpacity = (1 - t * 3).clamp(0.0, 1.0);
+      final double editButtonScale = (1 - t * 2).clamp(0.0, 1.0);
 
       return Container(
         color: Colors.white,
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Avatar
+            // Avatar - ProfilAvatar gère déjà le shimmer et l'image locale
             Positioned(
               left: avatarX,
               top: avatarY,
               child: SizedBox(
                 width: avatarSize,
                 height: avatarSize,
-                child: isLoading
-                    ? ShimmerBox(
-                        width: avatarSize,
-                        height: avatarSize,
-                        shape: BoxShape.circle,
-                      )
-                    : _buildAvatar(avatarSize, t),
+                child: ProfilAvatar(
+                  size: avatarSize,
+                  showEditButton: true,
+                  editButtonOpacity: editButtonOpacity,
+                  editButtonScale: editButtonScale,
+                  onTap: editButtonOpacity > 0.5 
+                      ? () => controller.pickProfileImage() 
+                      : null,
+                ),
               ),
             ),
 
+            // Nom - affiche la valeur par défaut si en chargement
             Positioned(
               left: nameCollapsedX * t,
               right: 16.r * t,
               top: nameY,
-              child: isLoading
-                  ? Align(
-                      alignment: Alignment.lerp(
-                        Alignment.center,
-                        Alignment.centerLeft,
-                        t,
-                      )!,
-                      child: ShimmerBox(
-                        width: 150.w - (30.w * t),
-                        height: fontSize * 1.3,
-                        borderRadius: 6.r,
-                      ),
-                    )
-                  : Align(
-                      alignment: Alignment.lerp(
-                        Alignment.center,
-                        Alignment.centerLeft,
-                        t,
-                      )!,
-                      child: Text(
-                        userName,
-                        style: TextStyle(
-                          fontSize: fontSize,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -1.2.r,
-                          height: 1.3,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
+              child: Align(
+                alignment: Alignment.lerp(
+                  Alignment.center,
+                  Alignment.centerLeft,
+                  t,
+                )!,
+                child: Text(
+                  userName,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -1.2.r,
+                    height: 1.3,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
             ),
 
-            // Membre depuis (fade out)
+            // Membre depuis (fade out) - affiche la valeur par défaut
             if (memberOpacity > 0)
               Positioned(
                 left: 0,
@@ -237,22 +246,16 @@ class _ProfilHeaderDelegate extends SliverPersistentHeaderDelegate {
                 child: Opacity(
                   opacity: memberOpacity,
                   child: Center(
-                    child: isLoading
-                        ? ShimmerBox(
-                            width: 130.w,
-                            height: 20.h,
-                            borderRadius: 4.r,
-                          )
-                        : Text(
-                            memberSince,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: -0.42.r,
-                              height: 1.4,
-                              color: const Color(0xFF5E5E5E),
-                            ),
-                          ),
+                    child: Text(
+                      memberSince,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: -0.42.r,
+                        height: 1.4,
+                        color: const Color(0xFF5E5E5E),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -260,74 +263,5 @@ class _ProfilHeaderDelegate extends SliverPersistentHeaderDelegate {
         ),
       );
     });
-  }
-
-  Widget _buildAvatar(double size, double t) {
-    final double editButtonOpacity = (1 - t * 3).clamp(0.0, 1.0);
-    final double editButtonScale = (1 - t * 2).clamp(0.0, 1.0);
-    final profileService = Get.find<ProfileImageService>();
-
-    return GestureDetector(
-      onTap: editButtonOpacity > 0.5 ? () => controller.pickProfileImage() : null,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Obx(() {
-            final imagePath = profileService.profileImagePath.value;
-            final hasImage = imagePath != null && 
-                             imagePath.isNotEmpty && 
-                             File(imagePath).existsSync();
-
-            return ClipOval(
-              child: hasImage
-                  ? Image.file(
-                      File(imagePath),
-                      width: size,
-                      height: size,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      width: size,
-                      height: size,
-                      color: const Color(0xFFE8E8E8),
-                      child: Icon(
-                        Icons.person,
-                        size: size * 0.5,
-                        color: const Color(0xFFB0B0B0),
-                      ),
-                    ),
-            );
-          }),
-
-          // Bouton edit/add
-          if (editButtonOpacity > 0)
-            Positioned(
-              right: -2.r,
-              bottom: -2.r,
-              child: Transform.scale(
-                scale: editButtonScale,
-                child: Opacity(
-                  opacity: editButtonOpacity,
-                  child: Container(
-                    height: 31.r,
-                    width: 31.r,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ClientTheme.primaryColor,
-                    ),
-                    child: Center(
-                      child: Image.asset(
-                        Assets.profilIconsEditProfilImage,
-                        width: 16.r,
-                        height: 16.r,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
   }
 }

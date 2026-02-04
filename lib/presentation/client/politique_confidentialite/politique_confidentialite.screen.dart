@@ -70,18 +70,12 @@ class PolitiqueConfidentialiteScreen
 
                    ),
                    SecondaryButton(
-                       onPressed: () async {
-                         AppConfig.isLoadingApp.value = true;
-                         await Future.delayed(Duration(seconds: 1));
-                         Get.toNamed(RouteNames.clientInscription);
-                         await Future.delayed(Duration(seconds: 1));
-                         AppConfig.isLoadingApp.value = false;
-                       },
+                       onPressed: () => controller.showDeleteAccountDialog(),
                        fontSize: 16.sp,
                        isEnabled: true,
                        icon: Image.asset("assets/images/client/profil_icons/trash-2.png", color: ClientTheme.errorColor,),
                        textColor: ClientTheme.errorColor,
-                       text: "Suprimer mon compte"
+                       text: "Supprimer mon compte"
                    )
                  ],
                ),

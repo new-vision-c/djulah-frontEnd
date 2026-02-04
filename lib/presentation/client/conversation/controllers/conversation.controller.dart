@@ -14,15 +14,13 @@ class ConversationController extends GetxController {
   final messageController = TextEditingController();
   final messages = <Message>[].obs;
   late Conversation conversation;
-  
-  /// Services de stockage
-  PendingMessagesStorageService get _pendingService => 
+
+  PendingMessagesStorageService get _pendingService =>
       Get.find<PendingMessagesStorageService>();
   ConversationsStorageService get _conversationsService => 
       Get.find<ConversationsStorageService>();
   SyncService get _syncService => Get.find<SyncService>();
   
-  /// ID utilisateur courant (à remplacer par l'ID réel de l'utilisateur connecté)
   String get _currentUserId => 'current_user_id'; // TODO: Récupérer depuis AppStorage
 
   @override
@@ -30,28 +28,23 @@ class ConversationController extends GetxController {
     super.onInit();
     if (Get.arguments != null) {
       conversation = Get.arguments as Conversation;
-      // On inverse pour que le plus récent soit à l'index 0 (car reverse: true dans la vue)
       messages.assignAll(conversation.messages.reversed.toList());
       
-      // Charger les messages pending locaux pour cette conversation
       _loadPendingMessages();
       
       Future.microtask(() {
         if (Get.isRegistered<MessagesController>()) {
           Get.find<MessagesController>().markAsRead(conversation.id);
         }
-        // Mettre à jour le cache
         _conversationsService.markAsRead(conversation.id);
       });
     }
   }
   
-  /// Charge les messages en attente depuis le stockage local
   void _loadPendingMessages() {
     final pendingMessages = _pendingService.getAllForConversation(conversation.id);
     
     for (final pending in pendingMessages) {
-      // Vérifier si le message n'existe pas déjà
       final exists = messages.any((m) => m.id == pending.localId);
       if (!exists) {
         final msg = Message(
@@ -62,7 +55,6 @@ class ConversationController extends GetxController {
           status: _mapSyncStatusToMessageStatus(pending.syncStatus),
         );
         
-        // Insérer au bon endroit (par date)
         final insertIndex = messages.indexWhere(
           (m) => m.time.isBefore(pending.createdAt)
         );
@@ -75,7 +67,6 @@ class ConversationController extends GetxController {
     }
   }
 
-  /// Envoie un message avec persistence locale
   Future<void> sendMessage() async {
     if (messageController.text.trim().isEmpty) return;
 
@@ -85,14 +76,12 @@ class ConversationController extends GetxController {
     message = "";
     update();
 
-    // 1. Créer le message pending dans le stockage local
     final pendingMessage = await _pendingService.enqueue(
       conversationId: conversation.id,
       text: text,
       senderId: _currentUserId,
     );
 
-    // 2. Créer le message pour l'UI
     final newMessage = Message(
       id: pendingMessage.localId,
       text: text,
@@ -101,62 +90,47 @@ class ConversationController extends GetxController {
       status: MessageStatus.pending,
     );
     
-    // 3. Ajouter à l'UI
     messages.insert(0, newMessage);
 
-    // 4. Mettre à jour le MessagesController
     _updateGlobal(newMessage);
     
-    // 5. Sauvegarder dans le cache des conversations
     await _conversationsService.addMessageToConversation(
       conversationId: conversation.id,
       message: newMessage,
       localId: pendingMessage.localId,
     );
 
-    // 6. Déclencher la synchronisation
     _syncAndUpdateStatus(pendingMessage.localId);
   }
   
-  /// Synchronise le message et met à jour le statut
   Future<void> _syncAndUpdateStatus(String localId) async {
-    // Attendre un peu pour l'UI
     await Future.delayed(const Duration(milliseconds: 500));
     
-    // Vérifier si on est en ligne
     if (_syncService.isOnline.value) {
-      // Simuler l'envoi (la vraie logique est dans SyncService)
       await _pendingService.markAsSending(localId);
       _updateMessageStatus(localId, MessageStatus.pending);
       
-      // Déclencher la sync
       await _syncService.syncNow();
       
-      // Vérifier le résultat
       await Future.delayed(const Duration(seconds: 1));
       
       final updatedPending = _pendingService.pendingMessages
           .firstWhereOrNull((m) => m.localId == localId);
       
       if (updatedPending == null) {
-        // Message envoyé avec succès
         _updateMessageStatus(localId, MessageStatus.sent);
         
-        // Simuler la vue après un délai
         await Future.delayed(const Duration(seconds: 2));
         _updateMessageStatus(localId, MessageStatus.viewed);
         await _pendingService.markAsViewed(localId);
       } else if (updatedPending.syncStatus == MessageSyncStatus.failed) {
-        // Échec de l'envoi
         _updateMessageStatus(localId, MessageStatus.failed);
       }
     } else {
-      // Hors ligne - le message reste en pending
       _updateMessageStatus(localId, MessageStatus.pending);
     }
   }
   
-  /// Réessaie d'envoyer un message échoué
   Future<void> retryMessage(String messageId) async {
     final success = await _pendingService.retry(messageId);
     if (success) {
@@ -178,7 +152,6 @@ class ConversationController extends GetxController {
       messages[index] = updatedMsg;
       messages.refresh();
       
-      // Mettre à jour le cache
       _conversationsService.updateMessageStatus(
         conversationId: conversation.id,
         messageId: id,
@@ -186,7 +159,6 @@ class ConversationController extends GetxController {
         localId: id,
       );
       
-      // Crucial : mettre à jour le MessagesController pour que l'état soit sauvegardé
       _updateGlobal(updatedMsg);
     }
   }
@@ -197,7 +169,6 @@ class ConversationController extends GetxController {
     }
   }
   
-  /// Convertit le statut de sync en statut de message
   MessageStatus _mapSyncStatusToMessageStatus(MessageSyncStatus syncStatus) {
     switch (syncStatus) {
       case MessageSyncStatus.pending:

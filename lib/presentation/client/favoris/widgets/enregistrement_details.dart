@@ -17,7 +17,7 @@ class EnregistrementDetails extends GetView<FavorisController> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBarCustom(title: "Enregistrements"),
+            AppBarCustom(title: 'favorites.saved'.tr),
             Expanded(
               child: Obx(() {
                 // Utiliser NotFoundFavoris si la liste est vide
@@ -25,7 +25,9 @@ class EnregistrementDetails extends GetView<FavorisController> {
                   return const Center(child: NotFoundFavoris());
                 }
                 
-                return ListView.separated(
+                return RefreshIndicator(
+                  onRefresh: controller.onRefresh,
+                  child: ListView.separated(
                   padding: EdgeInsets.symmetric(horizontal: 16.r, vertical: 40.r),
                   itemCount: controller.enregistrements.length,
                   separatorBuilder: (context, index) => SizedBox(height: 40.h),
@@ -46,9 +48,10 @@ class EnregistrementDetails extends GetView<FavorisController> {
                       onDismissed: (direction) {
                         controller.removeFavorite(item.id);
                       },
-                      child: AppCard2(item: item, isFavoris: true),
+                      child: AppCard2(item: item),
                     );
                   },
+                  ),
                 );
               }),
             )
@@ -62,16 +65,16 @@ class EnregistrementDetails extends GetView<FavorisController> {
     return await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Retirer des favoris'),
-        content: const Text('Voulez-vous vraiment retirer ce logement de vos favoris ?'),
+        title: Text('favorites.remove_title'.tr),
+        content: Text('favorites.remove_confirm'.tr),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Annuler'),
+            child: Text('common.cancel'.tr),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Retirer', style: TextStyle(color: Colors.red)),
+            child: Text('favorites.remove_button'.tr, style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

@@ -18,6 +18,7 @@ class VerificationIdentityScreen
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
       body: SafeArea(
         minimum: EdgeInsets.only(
             left: 16.r, right: 16.r, top: 64.r,),
@@ -152,7 +153,7 @@ class VerificationIdentityScreen
               children: [
                 Obx(() => PrimaryButton(
                   text: 'common.next'.tr,
-                  isEnabled: controller.isPinComplete.value,
+                  isEnabled: controller.isPinComplete.value && !controller.canResend.value,
                   disabledColor: ClientTheme.buttonDisabledColor,
                   onPressed: () async {
                     FocusScope.of(context).unfocus();

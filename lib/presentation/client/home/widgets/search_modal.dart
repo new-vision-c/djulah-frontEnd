@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:djulah/infrastructure/navigation/route_names.dart';
 import 'package:djulah/infrastructure/theme/client_theme.dart';
 import 'package:djulah/presentation/client/home/controllers/search_modal.controller.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
 
 class SearchModal extends StatefulWidget {
   final int initialTabIndex;
@@ -118,8 +118,10 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                   _buildTopBar(),
                   SizedBox(height: 16.h),
                   _buildLocationCard(),
-                  SizedBox(height: 12.h),
-                  _buildDateCard(),
+                  if (_currentTabIndex == 0) ...[
+                    SizedBox(height: 12.h),
+                    _buildDateCard(),
+                  ],
                   SizedBox(height: 12.h),
                   _buildLogementTypeCard(),
                   SizedBox(height: 20.h),
@@ -143,17 +145,17 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
         _buildTabItem(
           index: 0,
           icon: "assets/images/client/hotel.svg",
-          label: "Meublés",
+          label: 'home.furnished'.tr,
         ),
         _buildTabItem(
           index: 1,
           icon: "assets/images/client/BottomNavImages/house.svg",
-          label: "Non meublés",
+          label: 'home.unfurnished'.tr,
         ),
         _buildTabItem(
           index: 3,
           icon: "assets/images/client/hotel.svg",
-          label: "Commercial",
+          label: 'home.commercial'.tr,
         ),
       ],
     );
@@ -169,6 +171,8 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
       onTap: () {
         setState(() {
           _currentTabIndex = index;
+          // Clear property type selection when switching tabs
+          _controller.selectedLogementType.value = '';
         });
       },
       child: Column(
@@ -245,7 +249,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Où ?",
+                          'search.where'.tr,
                           style: TextStyle(
                             fontSize: isExpanded ? 22.sp : 15.sp,
                             fontWeight: isExpanded ? FontWeight.w700 : FontWeight.w400,
@@ -300,7 +304,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
         _buildSearchField(),
         SizedBox(height: 20.h),
         Text(
-          "Suggestions",
+          'search.suggestions'.tr,
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w400,
@@ -346,7 +350,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                 color: Color(0xFF111827),
               ),
               decoration: InputDecoration(
-                hintText: "Commencer ma recherche",
+                hintText: 'home.start_search'.tr,
                 hintStyle: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
@@ -442,7 +446,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
             ),
             SizedBox(height: 12.h),
             Text(
-              "Aucun résultat trouvé",
+              'search.no_results'.tr,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
@@ -451,7 +455,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
             ),
             SizedBox(height: 4.h),
             Text(
-              "Essayez avec un autre terme de recherche",
+              'search.try_other_search'.tr,
               style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -477,7 +481,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
             ),
             SizedBox(height: 12.h),
             Text(
-              "Erreur de connexion",
+              'search.connection_error'.tr,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
@@ -509,7 +513,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Text(
-                  "Réessayer",
+                  'search.retry'.tr,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -803,7 +807,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Quand",
+                        'search.when'.tr,
                         style: TextStyle(
                           fontSize: isExpanded ? 22.sp : 15.sp,
                           fontWeight: isExpanded ? FontWeight.w700 : FontWeight.w400,
@@ -826,7 +830,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                       if (!isExpanded && !hasSelection) ...[
                         SizedBox(height: 4.h),
                         Text(
-                          "Ajouter des dates",
+                          'search.add_dates'.tr,
                           style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w600,
@@ -870,7 +874,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
         SizedBox(height: 20.h),
         // Quick options
         Text(
-          "Options rapides",
+          'search.quick_options'.tr,
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w400,
@@ -878,19 +882,19 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
           ),
         ),
         SizedBox(height: 12.h),
-        Row(
+        Wrap(
+          spacing: 12.w,
+          runSpacing: 12.h,
           children: [
-            _buildQuickDateOption("Hier", yesterday),
-            SizedBox(width: 12.w),
-            _buildQuickDateOption("Aujourd'hui", now),
-            SizedBox(width: 12.w),
-            _buildQuickDateOption("Demain", tomorrow),
+            _buildQuickDateOption('search.yesterday'.tr, yesterday),
+            _buildQuickDateOption('search.today'.tr, now),
+            _buildQuickDateOption('search.tomorrow'.tr, tomorrow),
           ],
         ),
         SizedBox(height: 24.h),
         // Calendar picker
         Text(
-          "Choisir une date",
+          'search.choose_date'.tr,
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w400,
@@ -1134,7 +1138,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Type de logement",
+                        'search.property_type'.tr,
                         style: TextStyle(
                           fontSize: isExpanded ? 22.sp : 15.sp,
                           fontWeight: isExpanded ? FontWeight.w700 : FontWeight.w400,
@@ -1157,7 +1161,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                       if (!isExpanded && !hasSelection) ...[
                         SizedBox(height: 4.h),
                         Text(
-                          "Ajouter des types",
+                          'search.add_types'.tr,
                           style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w600,
@@ -1191,12 +1195,13 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
   }
 
   Widget _buildLogementTypeContent() {
+    final propertyTypes = _controller.getPropertyTypesForTab(_currentTabIndex);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
         Text(
-          "Sélectionnez un type",
+          'search.select_type'.tr,
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w400,
@@ -1207,7 +1212,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
         Wrap(
           spacing: 12.w,
           runSpacing: 12.h,
-          children: _controller.logementTypes.map((type) {
+          children: propertyTypes.map((type) {
             return _buildLogementTypeChip(type);
           }).toList(),
         ),
@@ -1282,7 +1287,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
             _controller.clearAllFilters();
           },
           child: Text(
-            "Tout effacer",
+            'search.clear_all'.tr,
             style: TextStyle(
               fontSize: 15.sp,
               fontWeight: FontWeight.w600,
@@ -1305,6 +1310,12 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
               'tabIndex': _currentTabIndex,
             };
             print("Search with filters: $filters");
+            
+            // Call the callback if provided (for refresh from result_search)
+            if (widget.onLocationSelected != null && _controller.selectedLocation.value != null) {
+              widget.onLocationSelected!(_controller.selectedLocation.value!);
+            }
+            
             Navigator.of(context).pop();
             
             // Check if we're already on the result search page
@@ -1336,7 +1347,7 @@ class _SearchModalState extends State<SearchModal> with TickerProviderStateMixin
                 ),
                 SizedBox(width: 10.w),
                 Text(
-                  "Rechercher",
+                  'search.search_button'.tr,
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,

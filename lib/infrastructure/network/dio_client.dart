@@ -9,8 +9,8 @@ class DioClient {
       : dio = Dio(
     BaseOptions(
       baseUrl: AppConfig.apiBaseUrl,
-      connectTimeout: const Duration(seconds: 60),
-      receiveTimeout: const Duration(seconds: 60),
+      connectTimeout: AppConfig.networkTimeout,
+      receiveTimeout: AppConfig.networkTimeout,
       contentType: "application/json",
       headers: {
         'Content-Type': 'application/json',
@@ -23,6 +23,5 @@ class DioClient {
       JwtInterceptor(),
     ]);
   }
-
   Dio getDio() => dio;
 }

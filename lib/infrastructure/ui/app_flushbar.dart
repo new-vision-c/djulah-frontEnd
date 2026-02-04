@@ -10,8 +10,11 @@ class AppFlushBar {
     BuildContext context, {
     required String message,
     required MessageType type,
-     String title="",
+    String title = "",
   }) {
+    // Retirer le focus avant d'afficher pour éviter que le clavier s'ouvre
+    FocusManager.instance.primaryFocus?.unfocus();
+
     IconData icon;
     Color background;
 
@@ -36,18 +39,19 @@ class AppFlushBar {
 
     Flushbar(
       message: message,
-      title: title,
-      titleSize: 12.sp,
+      title: title.isNotEmpty ? title : null,
+      titleSize: title.isNotEmpty ? 13.sp : null,
+      titleColor: Colors.white,
       icon: Icon(icon, size: 22, color: Colors.white),
       margin: const EdgeInsets.all(12),
       borderRadius: BorderRadius.circular(12),
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 6),
       backgroundColor: background,
       flushbarPosition: FlushbarPosition.BOTTOM,
-      animationDuration: const Duration(seconds: 1),
+      animationDuration: const Duration(milliseconds: 500),
       messageColor: Colors.white,
-      messageSize: 12.sp,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      messageSize: 11.sp,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     ).show(context);
   }
 }

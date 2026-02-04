@@ -36,19 +36,35 @@ class NetworkStateService extends GetxService {
     onMessage?.call(message, type);
   }
 
-  /// Test de connexion au backend
   Future<void> checkBackendConnection() async {
     try {
       final dio = Get.find<DioClient>().getDio();
-      // Faire une requête simple de test (peut être un endpoint /health ou /ping)
-      await dio.get('/health', options: Options(
-        sendTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
+      final response = await dio.get('/api/health', options: Options(
+        extra: {'skip_auth': true},
       ));
       markBackendReachable();
+      
+      if (response.data is Map) {
+        final data = response.data as Map;
+        final services = data['services'] as Map?;
+        
+        if (services != null) {
+          final apiStatus = services['api']?['status'] ?? 'unknown';
+          final redisStatus = services['redis']?['status'] ?? 'unknown';
+          final cloudinaryStatus = services['cloudinary']?['status'] ?? 'unknown';
+          final dbStatus = services['database']?['status'] ?? 'unknown';
+          
+          final message = 'network.backendConnected'.tr + '\n'
+              'API: $apiStatus | Redis: $redisStatus\n'
+              'Cloudinary: $cloudinaryStatus | DB: $dbStatus';
+          onMessage?.call(message, MessageType.success);
+        }
+      }
     } catch (e) {
-      markBackendUnreachable();
-    }
+      markBackendUnreachable();      onMessage?.call(
+        'network.serverUnavailable'.tr,
+        MessageType.error,
+      );    }
   }
 
   void markBackendReachable() {

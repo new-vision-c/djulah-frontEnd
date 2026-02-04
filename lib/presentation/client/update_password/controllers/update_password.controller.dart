@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../app/config/app_config.dart';
 import '../../../../infrastructure/navigation/route_names.dart';
+import '../../../components/password_field.widget.dart';
 
 class UpdatePasswordController extends GetxController {
 
@@ -21,10 +22,9 @@ class UpdatePasswordController extends GetxController {
 
 
   bool get isFormValid =>
-      newPassword.value.length >= limitCharPassword.value &&
-      confirmPassword.value.length >= limitCharPassword.value &&
-      confirmPassword.value ==   newPassword.value
-  ;
+      PasswordField.validatePassword(newPassword.value) == null &&
+      PasswordField.validatePassword(confirmPassword.value) == null &&
+      confirmPassword.value == newPassword.value;
 
   Future<void> goToSuccessPage() async{
     AppConfig.isLoadingApp.value=true;

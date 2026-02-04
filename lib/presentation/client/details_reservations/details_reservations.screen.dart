@@ -21,7 +21,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
       body: SafeArea(
         child: Column(
             children: [
-              AppBarCustom(title: "Details"),
+              AppBarCustom(title: 'reservations.details'.tr),
               Expanded(
                   child: Obx(() {
                     if (controller.isLoading.value || controller.reservation.value == null) {
@@ -74,10 +74,22 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                                               borderRadius: BorderRadius.circular(8.r),
                                             )),
                                           ),
-                                          onPressed: (){
-                                            Get.toNamed(RouteNames.clientDetailsLogement);
+                                          onPressed: () {
+                                            // Naviguer avec la propriété associée si disponible
+                                            if (reservation.propriete != null) {
+                                              Get.toNamed(
+                                                RouteNames.clientDetailsLogement,
+                                                arguments: reservation.propriete,
+                                              );
+                                            } else {
+                                              // Fallback: créer une propriété temporaire depuis les données de réservation
+                                              Get.toNamed(
+                                                RouteNames.clientDetailsLogement,
+                                                arguments: controller.getProprieteFallback(),
+                                              );
+                                            }
                                           },
-                                          child: Text("Details",
+                                          child: Text('reservations.details'.tr,
                                             style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w500,
@@ -105,7 +117,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text("Date",
+                                        Text('reservations.date'.tr,
                                           style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -170,7 +182,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text("Prix total",
+                                        Text('reservations.total_price'.tr,
                                           style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -204,7 +216,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                                           onPressed: (){
 
                                           },
-                                          child: Text("Modifier",
+                                          child: Text('common.modify'.tr,
                                             style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w500,
@@ -224,7 +236,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                                   thickness: 1.r,
                                 ),
                                 Text(
-                                  "Si vous annulez avant l'arrivée prévue le ${reservation.date}, vous aurez droit a un remboursement partiel",
+                                  'reservations.cancel_warning'.trParams({'date': reservation.date}),
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
@@ -234,7 +246,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                                   ),
                                 ),
                                 Text(
-                                  "Consulter les conditions complètes",
+                                  'reservations.view_full_conditions'.tr,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     decoration: TextDecoration.underline,
@@ -251,8 +263,8 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                           children: [
                             PrimaryButton(
                               text: reservation.isConfirmed 
-                                  ? "Annuler la réservation" 
-                                  : "Réserver à nouveau",
+                                  ? 'reservations.cancel_reservation'.tr 
+                                  : 'reservations.book_again'.tr,
                               isEnabled: true,
                               onPressed: () async {
                               },
@@ -260,7 +272,7 @@ class DetailsReservationsScreen extends GetView<DetailsReservationsController> {
                             SecondaryButton(
                               onPressed: () {
                               },
-                              text: "Signaler un problème",
+                              text: 'reservations.report_issue'.tr,
                               textColor: Colors.black,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,

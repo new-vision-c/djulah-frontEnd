@@ -10,7 +10,6 @@ class HistoriqueModel {
     required this.reservation,
   });
   
-  // Convenience getters
   String get title => reservation.title;
   String get dateRange => reservation.dateRange;
   String get price => reservation.price;
@@ -30,7 +29,6 @@ class HistoriqueController extends GetxController {
 
   Future<void> _loadHistorique() async {
     isLoading.value = true;
-    // Simulation du délai de chargement
     await Future.delayed(const Duration(seconds: 2));
     
     historiqueItems.assignAll([
@@ -101,5 +99,10 @@ class HistoriqueController extends GetxController {
     ]);
     
     isLoading.value = false;
+  }
+  
+  /// Méthode de rafraîchissement pour le pull-to-refresh
+  Future<void> onRefresh() async {
+    await _loadHistorique();
   }
 }

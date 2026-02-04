@@ -1,6 +1,9 @@
 import 'package:djulah/infrastructure/navigation/route_names.dart';
+import 'package:djulah/presentation/components/loading_overlay.widget.dart';
+import 'package:djulah/infrastructure/network/connection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'app/config/app_config.dart';
@@ -30,20 +33,30 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localeService = Get.find<LocaleService>();
-    return GetMaterialApp(
-      title: AppConfig.appName,
-      theme: ProTheme.lightTheme,
-      initialRoute: initialRoute,
-      getPages: Nav.routes,
-      translations: translations,
-      locale: localeService.currentLocale,
-      fallbackLocale: LocaleService.fallbackLocale,
-      supportedLocales: LocaleService.supportedLocales,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
+    return ScreenUtilInit(
+      designSize: const Size(402, 874),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: GetMaterialApp(
+        title: AppConfig.appName,
+        theme: ProTheme.lightTheme,
+        initialRoute: initialRoute,
+        getPages: Nav.routes,
+        translations: translations,
+        locale: localeService.currentLocale,
+        fallbackLocale: LocaleService.fallbackLocale,
+        supportedLocales: LocaleService.supportedLocales,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        builder: (context, child) {
+          return LoadingOverlay(
+            child: child ?? const SizedBox.shrink(),
+          );
+        },
+      ),
     );
   }
 }
@@ -71,16 +84,10 @@ Future<({String initialRoute, AppTranslations translations})> _bootstrapPro() as
 
   Get.put<DioClient>(DioClient(), permanent: true);
 
+  // Initialiser le service de connexion global APRÈS DioClient
+  Get.put<ConnectionService>(ConnectionService(), permanent: true);
+
   Get.find<NetworkStateService>().registerHandlers(
-    onBackendUnreachable: () {
-      final ctx = Get.context;
-      if (ctx == null) return;
-      AppFlushBar.show(
-        ctx,
-        message: 'Backend inaccessible. Vérifie ta connexion.',
-        type: MessageType.error,
-      );
-    },
     onUnauthorized: () {
       final ctx = Get.context;
       if (ctx == null) return;

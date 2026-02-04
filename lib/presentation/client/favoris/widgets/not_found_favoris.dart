@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class NotFoundFavoris extends StatelessWidget{
   const NotFoundFavoris({super.key});
@@ -13,7 +14,7 @@ class NotFoundFavoris extends StatelessWidget{
         Image.asset("assets/images/not_found/reservation.png",height: 300.r,width: 300.r,),
         SizedBox(height: 40.r),
         Text(
-            "Rien ici pour le moment",
+            'favorites.nothing_here'.tr,
             style: TextStyle(
               fontSize: 24.sp,
               fontStyle: FontStyle.normal,
@@ -25,7 +26,7 @@ class NotFoundFavoris extends StatelessWidget{
         SizedBox(height: 8.r,),
         Text(
             textAlign: TextAlign.center,
-            "Retrouvez tout vos coups de cœur ici, alors à très vite",
+            'favorites.find_favorites'.tr,
             style: TextStyle(
                 fontSize: 16.sp,
                 fontStyle: FontStyle.normal,

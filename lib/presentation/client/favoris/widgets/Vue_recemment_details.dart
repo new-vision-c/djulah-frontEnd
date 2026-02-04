@@ -15,24 +15,26 @@ class VueRecementDetails extends GetView<FavorisController> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBarCustom(title: "Vu récemment"),
+            AppBarCustom(title: 'favorites.recently_viewed'.tr),
             Expanded(
-              child: Obx(() => GridView.builder(
-                padding: EdgeInsets.all(16.r),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.r,
-                  mainAxisSpacing: 16.r,
-                  childAspectRatio: 177 / 250,
-                ),
-                itemCount: controller.vuRecemment.length,
-                itemBuilder: (context, index) {
-                  return AppCard(
-                    item: controller.vuRecemment[index],
-                    isFavoris: true,
-                  );
-                },
-              )),
+              child: RefreshIndicator(
+                onRefresh: controller.onRefresh,
+                child: Obx(() => GridView.builder(
+                  padding: EdgeInsets.all(16.r),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.r,
+                    mainAxisSpacing: 16.r,
+                    childAspectRatio: 177 / 250,
+                  ),
+                  itemCount: controller.vuRecemment.length,
+                  itemBuilder: (context, index) {
+                    return AppCard(
+                      item: controller.vuRecemment[index],
+                    );
+                  },
+                )),
+              ),
             )
           ],
         ),

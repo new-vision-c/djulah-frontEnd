@@ -1,18 +1,12 @@
 import 'dart:async';
 
 import 'package:djulah/infrastructure/navigation/route_names.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class SplashScreenCustomController extends GetxController {
-  //TODO: Implement SplashScreenCustomController
-
-  final count = 0.obs;
-
   final RxDouble logoScale = 0.0.obs;
   final RxBool logoAtBottomCenter = false.obs;
-
   final RxDouble othersOpacity = 0.0.obs;
 
   Timer? _scaleTimer;
@@ -24,6 +18,9 @@ class SplashScreenCustomController extends GetxController {
   static const Duration _positionOpacityDelay = Duration(milliseconds: 600);
   @override
   void onInit() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startEntrance();
+    });
     super.onInit();
   }
 
@@ -39,17 +36,15 @@ class SplashScreenCustomController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
-
-  void  goToHomePage(){
+  void goToHomePage() {
     Get.offAllNamed(RouteNames.clientDashboard);
   }
   
-  void  goToInscriptionPage(){
+  void goToInscriptionPage() {
     Get.toNamed(RouteNames.clientInscription);
   }
   
-  void  goToConnectPage(){
+  void goToConnectPage() {
     Get.toNamed(RouteNames.clientLogin);
   }
 
@@ -70,4 +65,6 @@ class SplashScreenCustomController extends GetxController {
       othersOpacity.value = 1.0;
     });
   }
+  
+
 }
